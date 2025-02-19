@@ -1,6 +1,7 @@
 package backend.datn.services;
 
-import backend.datn.dto.request.ColorRequest;
+import backend.datn.dto.request.ColorCreateRequest;
+import backend.datn.dto.request.ColorUpdateRequest;
 import backend.datn.dto.response.ColorResponse;
 import backend.datn.entities.Color;
 import backend.datn.exceptions.EntityAlreadyExistsException;
@@ -40,27 +41,27 @@ public class ColorService {
     }
 
     @Transactional
-    public ColorResponse createColor(ColorRequest colorRequest) {
-        if (colorRepository.existsByColorName(colorRequest.getColorName())) {
-            throw new ResourceNotFoundException("Color with name " + colorRequest.getColorName() + " already exists");
+    public ColorResponse createColor(ColorCreateRequest colorCreateRequest) {
+        if (colorRepository.existsByColorName(colorCreateRequest.getColorName())) {
+            throw new ResourceNotFoundException("Color with name " + colorCreateRequest.getColorName() + " already exists");
         }
         Color color = new Color();
-        color.setColorName(colorRequest.getColorName());
-        color.setStatus(colorRequest.getStatus());
+        color.setColorName(colorCreateRequest.getColorName());
+        color.setStatus(colorCreateRequest.getStatus());
         color = colorRepository.save(color);
         return ColorMapper.toColorResponse(color);
     }
 
     @Transactional
-    public ColorResponse updateColor(Integer id,ColorRequest colorRequest) {
+    public ColorResponse updateColor(Integer id, ColorUpdateRequest colorUpdateRequest) {
         Color color = colorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Color not found with id " + id));
 
-        if(color.getColorName().equalsIgnoreCase(colorRequest.getColorName()) && colorRepository.existsByColorName(colorRequest.getColorName())) {
-            throw new EntityAlreadyExistsException("Color with name " + colorRequest.getColorName() + " already exists");
+        if(color.getColorName().equalsIgnoreCase(colorUpdateRequest.getName()) && colorRepository.existsByColorName(colorUpdateRequest.getName())) {
+            throw new EntityAlreadyExistsException("Color with name " + colorUpdateRequest.getName() + " already exists");
         }
-        color.setColorName(colorRequest.getColorName());
-        color.setStatus(colorRequest.getStatus());
+        color.setColorName(colorUpdateRequest.getName());
+        color.setStatus(colorUpdateRequest.getStatus());
         color = colorRepository.save(color);
         return ColorMapper.toColorResponse(color);
     }

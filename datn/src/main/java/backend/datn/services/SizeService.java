@@ -1,6 +1,7 @@
 package backend.datn.services;
 
-import backend.datn.dto.request.SizeRequest;
+import backend.datn.dto.request.SizeCreateRequest;
+import backend.datn.dto.request.SizeUpdateRequest;
 import backend.datn.dto.response.SizeResponse;
 import backend.datn.entities.Size;
 import backend.datn.exceptions.EntityAlreadyExistsException;
@@ -40,27 +41,27 @@ public class SizeService {
     }
 
     @Transactional
-    public SizeResponse createSize(SizeRequest sizeRequest) {
-        if (sizeRepository.existsBySizeName(sizeRequest.getName())) {
-            throw new ResourceNotFoundException("Size with name " + sizeRequest.getName() + " already exists");
+    public SizeResponse createSize(SizeCreateRequest sizeCreateRequest) {
+        if (sizeRepository.existsBySizeName(sizeCreateRequest.getName())) {
+            throw new ResourceNotFoundException("Size with name " + sizeCreateRequest.getName() + " already exists");
         }
         Size size = new Size();
-        size.setSizeName(sizeRequest.getName());
-        size.setStatus(sizeRequest.getStatus());
+        size.setSizeName(sizeCreateRequest.getName());
+        size.setStatus(sizeCreateRequest.getStatus());
         size = sizeRepository.save(size);
         return SizeMapper.toSizeResponse(size);
     }
 
     @Transactional
-    public SizeResponse updateSize(Integer id, SizeRequest sizeRequest) {
+    public SizeResponse updateSize(Integer id, SizeUpdateRequest sizeUpdateRequest) {
         Size size = sizeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Size not found with id " + id));
 
-        if(size.getSizeName().equalsIgnoreCase(sizeRequest.getName()) && sizeRepository.existsBySizeName(sizeRequest.getName())) {
-            throw new EntityAlreadyExistsException("Size with name " + sizeRequest.getName() + " already exists");
+        if(size.getSizeName().equalsIgnoreCase(sizeUpdateRequest.getName()) && sizeRepository.existsBySizeName(sizeUpdateRequest.getName())) {
+            throw new EntityAlreadyExistsException("Size with name " + sizeUpdateRequest.getName() + " already exists");
         }
-        size.setSizeName(sizeRequest.getName());
-        size.setStatus(sizeRequest.getStatus());
+        size.setSizeName(sizeUpdateRequest.getName());
+        size.setStatus(sizeUpdateRequest.getStatus());
         size = sizeRepository.save(size);
         return SizeMapper.toSizeResponse(size);
     }

@@ -1,7 +1,9 @@
 package backend.datn.controllers;
 
 import backend.datn.dto.ApiResponse;
-import backend.datn.dto.request.SizeRequest;
+import backend.datn.dto.request.SizeCreateRequest;
+import backend.datn.dto.request.SizeUpdateRequest;
+import backend.datn.dto.response.CategoryResponse;
 import backend.datn.dto.response.SizeResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
@@ -36,9 +38,9 @@ public class SizeController {
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createSize(@RequestBody SizeRequest sizeRequest) {
+    public ResponseEntity<ApiResponse> createSize(@RequestBody SizeCreateRequest sizeCreateRequest) {
         try {
-            SizeResponse sizeResponse = sizeService.createSize(sizeRequest);
+            SizeResponse sizeResponse = sizeService.createSize(sizeCreateRequest);
             ApiResponse response = new ApiResponse("success", "Size created successfully", sizeResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
@@ -66,9 +68,9 @@ public class SizeController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateSize(@PathVariable Integer id, @RequestBody SizeRequest sizeRequest) {
+    public ResponseEntity<ApiResponse> updateSize(@PathVariable Integer id, @RequestBody SizeUpdateRequest sizeUpdateRequest) {
         try {
-            SizeResponse sizeResponse = sizeService.updateSize(id, sizeRequest);
+            SizeResponse sizeResponse = sizeService.updateSize(id, sizeUpdateRequest);
             ApiResponse response = new ApiResponse("success", "Size updated successfully", sizeResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -94,6 +96,21 @@ public class SizeController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("error", "An error occurred while deleting the size", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}/toggle-status")
+    public ResponseEntity<ApiResponse> toggleStatusSize(@PathVariable Integer id){
+        try {
+            SizeResponse sizeResponse = sizeService.toggleSizeStatus(id);
+            ApiResponse response = new ApiResponse("success", "Toggle status size successfully", sizeResponse);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the size", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

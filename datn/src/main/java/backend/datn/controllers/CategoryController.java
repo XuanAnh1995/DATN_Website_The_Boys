@@ -1,7 +1,9 @@
 package backend.datn.controllers;
 
 import backend.datn.dto.ApiResponse;
-import backend.datn.dto.request.CategoryRequest;
+import backend.datn.dto.request.CategoryCreateRequest;
+import backend.datn.dto.request.CategoryUpdateRequest;
+import backend.datn.dto.response.BrandResponse;
 import backend.datn.dto.response.CategoryResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
@@ -21,9 +23,9 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<ApiResponse> createCategory(@RequestBody CategoryCreateRequest categoryCreateRequest) {
         try {
-            CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+            CategoryResponse categoryResponse = categoryService.createCategory(categoryCreateRequest);
             ApiResponse response = new ApiResponse("success", "Category created successfully", categoryResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
@@ -35,9 +37,9 @@ public class CategoryController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer id, @RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer id, @RequestBody CategoryUpdateRequest categoryUpdateRequest) {
         try {
-            CategoryResponse categoryResponse = categoryService.updateCategory(id, categoryRequest);
+            CategoryResponse categoryResponse = categoryService.updateCategory(id, categoryUpdateRequest);
             ApiResponse response = new ApiResponse("success", "Category updated successfully", categoryResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -95,6 +97,21 @@ public class CategoryController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the categories", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}/toggle-status")
+    public ResponseEntity<ApiResponse> toggleStatusCategory(@PathVariable Integer id){
+        try {
+            CategoryResponse categoryResponse = categoryService.toggleCategoryStatus(id);
+            ApiResponse response = new ApiResponse("success", "Toggle status category successfully", categoryResponse);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the category", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

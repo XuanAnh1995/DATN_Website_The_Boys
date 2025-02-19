@@ -1,7 +1,8 @@
 package backend.datn.controllers;
 
 import backend.datn.dto.ApiResponse;
-import backend.datn.dto.request.CollarRequest;
+import backend.datn.dto.request.CollarCreateRequest;
+import backend.datn.dto.request.CollarUpdateRequest;
 import backend.datn.dto.response.CollarResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
@@ -35,9 +36,9 @@ public class CollarController {
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createCollar(@RequestBody CollarRequest collarRequest) {
+    public ResponseEntity<ApiResponse> createCollar(@RequestBody CollarCreateRequest collarCreateRequest) {
         try {
-            CollarResponse collarResponse = collarService.createCollar(collarRequest);
+            CollarResponse collarResponse = collarService.createCollar(collarCreateRequest);
             ApiResponse response = new ApiResponse("success", "Collar created successfully", collarResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
@@ -67,9 +68,9 @@ public class CollarController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateCollar(@PathVariable Integer id, @RequestBody CollarRequest collarRequest) {
+    public ResponseEntity<ApiResponse> updateCollar(@PathVariable Integer id, @RequestBody CollarUpdateRequest collarUpdateRequest) {
         try {
-            CollarResponse collarResponse = collarService.updateCollar(id, collarRequest);
+            CollarResponse collarResponse = collarService.updateCollar(id, collarUpdateRequest);
             ApiResponse response = new ApiResponse("success", "Collar updated successfully", collarResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -95,6 +96,21 @@ public class CollarController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("error", "An error occurred while deleting the collar", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}/toggle-status")
+    public ResponseEntity<ApiResponse> toggleStatusCollar(@PathVariable Integer id){
+        try {
+            CollarResponse collarResponse = collarService.toggleCollarStatus(id);
+            ApiResponse response = new ApiResponse("success", "Toggle status collar successfully", collarResponse);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the collar", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

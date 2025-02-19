@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ColorRequest  {
+public class ColorCreateRequest {
     @NotNull
     String colorName;
     @NotNull

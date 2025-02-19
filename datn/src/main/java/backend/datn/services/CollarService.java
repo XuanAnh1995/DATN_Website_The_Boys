@@ -1,6 +1,7 @@
 package backend.datn.services;
 
-import backend.datn.dto.request.CollarRequest;
+import backend.datn.dto.request.CollarCreateRequest;
+import backend.datn.dto.request.CollarUpdateRequest;
 import backend.datn.dto.response.CollarResponse;
 import backend.datn.entities.Collar;
 import backend.datn.exceptions.EntityAlreadyExistsException;
@@ -40,27 +41,27 @@ public class CollarService {
     }
 
     @Transactional
-    public CollarResponse createCollar(CollarRequest collarRequest) {
-        if (collarRepository.existsByCollarName(collarRequest.getCollarName())) {
-            throw new ResourceNotFoundException("Collar with name " + collarRequest.getCollarName() + " already exists");
+    public CollarResponse createCollar(CollarCreateRequest collarCreateRequest) {
+        if (collarRepository.existsByCollarName(collarCreateRequest.getCollarName())) {
+            throw new ResourceNotFoundException("Collar with name " + collarCreateRequest.getCollarName() + " already exists");
         }
         Collar collar = new Collar();
-        collar.setCollarName(collarRequest.getCollarName());
-        collar.setStatus(collarRequest.getStatus());
+        collar.setCollarName(collarCreateRequest.getCollarName());
+        collar.setStatus(collarCreateRequest.getStatus());
         collar = collarRepository.save(collar);
         return CollarMapper.toCollarResponse(collar);
     }
 
     @Transactional
-    public CollarResponse updateCollar(Integer id, CollarRequest collarRequest) {
+    public CollarResponse updateCollar(Integer id, CollarUpdateRequest collarUpdateRequest) {
         Collar collar = collarRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Collar not found with id " + id));
 
-        if(collar.getCollarName().equalsIgnoreCase(collarRequest.getCollarName()) && collarRepository.existsByCollarName(collarRequest.getCollarName())) {
-            throw new EntityAlreadyExistsException("Collar with name " + collarRequest.getCollarName() + " already exists");
+        if(collar.getCollarName().equalsIgnoreCase(collarUpdateRequest.getName()) && collarRepository.existsByCollarName(collarUpdateRequest.getName())) {
+            throw new EntityAlreadyExistsException("Collar with name " + collarUpdateRequest.getName() + " already exists");
         }
-        collar.setCollarName(collarRequest.getCollarName());
-        collar.setStatus(collarRequest.getStatus());
+        collar.setCollarName(collarUpdateRequest.getName());
+        collar.setStatus(collarUpdateRequest.getStatus());
         collar = collarRepository.save(collar);
         return CollarMapper.toCollarResponse(collar);
     }
