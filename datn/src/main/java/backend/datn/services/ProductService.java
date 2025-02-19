@@ -6,7 +6,6 @@ import backend.datn.dto.response.ProductResponse;
 import backend.datn.entities.Product;
 import backend.datn.mapper.ProductMapper;
 import backend.datn.repositories.BrandRepository;
-import backend.datn.repositories.CategoryRepository;
 import backend.datn.repositories.MaterialRepository;
 import backend.datn.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
