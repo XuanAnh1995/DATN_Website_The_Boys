@@ -1,7 +1,8 @@
 package backend.datn.services;
 
+import backend.datn.dto.request.CategoryUpdateRequest;
 import backend.datn.repositories.CategoryRepository;
-import backend.datn.dto.request.CategoryRequest;
+import backend.datn.dto.request.CategoryCreateRequest;
 import backend.datn.dto.response.CategoryResponse;
 import backend.datn.entities.Category;
 import backend.datn.exceptions.EntityAlreadyExistsException;
@@ -42,27 +43,27 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryResponse createCategory(CategoryRequest categoryRequest) {
-        if (categoryRepository.existsByCategoryName(categoryRequest.getName())) {
-            throw new ResourceNotFoundException("Category with name " + categoryRequest.getName() + " already exists");
+    public CategoryResponse createCategory(CategoryCreateRequest categoryCreateRequest) {
+        if (categoryRepository.existsByCategoryName(categoryCreateRequest.getName())) {
+            throw new ResourceNotFoundException("Category with name " + categoryCreateRequest.getName() + " already exists");
         }
         Category category = new Category();
-        category.setCategoryName(categoryRequest.getName());
-        category.setStatus(categoryRequest.getStatus());
+        category.setCategoryName(categoryCreateRequest.getName());
+        category.setStatus(categoryCreateRequest.getStatus());
         category = categoryRepository.save(category);
         return CategoryMapper.toCategoryResponse(category);
     }
 
     @Transactional
-    public CategoryResponse updateCategory(Integer id, CategoryRequest categoryRequest) {
+    public CategoryResponse updateCategory(Integer id, CategoryUpdateRequest categoryUpdateRequest) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id " + id));
 
-        if(category.getCategoryName().equalsIgnoreCase(categoryRequest.getName()) && categoryRepository.existsByCategoryName(categoryRequest.getName())) {
-            throw new EntityAlreadyExistsException("Category with name " + categoryRequest.getName() + " already exists");
+        if(category.getCategoryName().equalsIgnoreCase(categoryUpdateRequest.getName()) && categoryRepository.existsByCategoryName(categoryUpdateRequest.getName())) {
+            throw new EntityAlreadyExistsException("Category with name " + categoryUpdateRequest.getName() + " already exists");
         }
-        category.setCategoryName(categoryRequest.getName());
-        category.setStatus(categoryRequest.getStatus());
+        category.setCategoryName(categoryUpdateRequest.getName());
+        category.setStatus(categoryUpdateRequest.getStatus());
         category = categoryRepository.save(category);
         return CategoryMapper.toCategoryResponse(category);
     }

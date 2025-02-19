@@ -7,10 +7,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CategoryRequest {
+public class SizeCreateRequest {
     @NotBlank(message = "Name is mandatory")
-    private String name;
-
-    @NotNull(message = "Status is mandatory")
-    private Boolean status;
+    String name;
+    @NotNull
+    Boolean status;
 }

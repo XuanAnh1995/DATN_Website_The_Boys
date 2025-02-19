@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CollarRequest  {
+public class CollarCreateRequest {
     @NotBlank(message = "Name is mandatory")
     private String collarName;
 
