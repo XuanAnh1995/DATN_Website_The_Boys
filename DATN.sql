@@ -483,25 +483,25 @@ INSERT INTO [role] ([name]) VALUES
 ('MANAGER'),
 ('STAFF');
 
-INSERT INTO employee (employee_code, role_id, fullname, username, [password], email, phone, photo, [status], create_date, update_date, forget_password, gender) VALUES
-('EMP001', 1, N'Nguyễn Văn A', 'nguyenvana', 'password123', 'nguyenvana@example.com', '0912345678', 'photo1.jpg', 1, '2025-02-17', '2025-02-17', 0, 1),
-('EMP002', 2, N'Nguyễn Thị B', 'nguyenthitha', 'password123', 'nguyenthitha@example.com', '0912345679', 'photo2.jpg', 1, '2025-02-17', '2025-02-17', 0, 0),
-('EMP003', 1, N'Phạm Minh C', 'phamminhc', 'password123', 'phamminhc@example.com', '0912345680', 'photo3.jpg', 1, '2025-02-17', '2025-02-17', 0, 1),
-('EMP004', 3, N'Lê Quang D', 'lequangd', 'password123', 'lequangd@example.com', '0912345681', 'photo4.jpg', 1, '2025-02-17', '2025-02-17', 0, 1),
-('EMP005', 2, N'Vũ Minh E', 'vuminhE', 'password123', 'vuminhE@example.com', '0912345682', 'photo5.jpg', 1, '2025-02-17', '2025-02-17', 0, 0),
-('EMP006', 3, N'Trần Thi F', 'tranthif', 'password123', 'tranthif@example.com', '0912345683', 'photo6.jpg', 1, '2025-02-17', '2025-02-17', 0, 0),
-('EMP007', 1, N'Hồ Hoàng G', 'hohoangg', 'password123', 'hohoangg@example.com', '0912345684', 'photo7.jpg', 1, '2025-02-17', '2025-02-17', 0, 1),
-('EMP008', 2, N'Ngô Minh H', 'ngominhh', 'password123', 'ngominhh@example.com', '0912345685', 'photo8.jpg', 1, '2025-02-17', '2025-02-17', 0, 0);
+INSERT INTO employee (employee_code, role_id, fullname, username, [password], email, phone, photo, [status], create_date, update_date, [address], forget_password, gender) VALUES
+('EMP001', 1, N'Nguyễn Văn A', 'nguyenvana', 'password123', 'nguyenvana@example.com', '0912345678', 'photo1.jpg', 1, '2025-02-17', '2025-02-17',N'Hà Nội' , 0, 1),
+('EMP002', 2, N'Nguyễn Thị B', 'nguyenthitha', 'password123', 'nguyenthitha@example.com', '0912345679', 'photo2.jpg', 1, '2025-02-17', '2025-02-17', N'Hà Nam', 0, 0),
+('EMP003', 1, N'Phạm Minh C', 'phamminhc', 'password123', 'phamminhc@example.com', '0912345680', 'photo3.jpg', 1, '2025-02-17', '2025-02-17',N'Hà Nội', 0, 1),
+('EMP004', 3, N'Lê Quang D', 'lequangd', 'password123', 'lequangd@example.com', '0912345681', 'photo4.jpg', 1, '2025-02-17', '2025-02-17',N'Tây Ninh' ,0, 1),
+('EMP005', 2, N'Vũ Minh E', 'vuminhE', 'password123', 'vuminhE@example.com', '0912345682', 'photo5.jpg', 1, '2025-02-17', '2025-02-17',N'Phú Thọ', 0, 0),
+('EMP006', 3, N'Trần Thi F', 'tranthif', 'password123', 'tranthif@example.com', '0912345683', 'photo6.jpg', 1, '2025-02-17', '2025-02-17',N'Hà Nội', 0, 0),
+('EMP007', 1, N'Hồ Hoàng G', 'hohoangg', 'password123', 'hohoangg@example.com', '0912345684', 'photo7.jpg', 1, '2025-02-17', '2025-02-17', N'Hà Nam', 0, 1),
+('EMP008', 2, N'Ngô Minh H', 'ngominhh', 'password123', 'ngominhh@example.com', '0912345685', 'photo8.jpg', 1, '2025-02-17', '2025-02-17', N'Nam Định', 0, 0);
 
-INSERT INTO customer (customer_code, fullname, username, [password], email, phone, [address], create_date, update_date, forget_password, [status]) VALUES
-('CUST001', N'Nguyễn Hoàng A', 'nguyenhoanga', 'password123', 'nguyenhoanga@example.com', '0912345678', N'123 Đường ABC, TP. HCM', '2025-02-17', '2025-02-17', 0, 1),
-('CUST002', N'Nguyễn Thị B', 'nguyenthithb', 'password123', 'nguyenthithb@example.com', '0912345679', N'456 Đường DEF, Hà Nội', '2025-02-17', '2025-02-17', 0, 1),
-('CUST003', N'Phạm Minh C', 'phamminhc', 'password123', 'phamminhc@example.com', '0912345680', N'789 Đường GHI, Đà Nẵng', '2025-02-17', '2025-02-17', 0, 1),
-('CUST004', N'Lê Quang D', 'lequangd', 'password123', 'lequangd@example.com', '0912345681', N'101 Đường JKL, TP. HCM', '2025-02-17', '2025-02-17', 0, 1),
-('CUST005', N'Vũ Minh E', 'vuminhe', 'password123', 'vuminhe@example.com', '0912345682', N'202 Đường MNO, Hà Nội', '2025-02-17', '2025-02-17', 0, 1),
-('CUST006', N'Trần Thi F', 'tranthif', 'password123', 'tranthif@example.com', '0912345683', N'303 Đường PQR, Đà Nẵng', '2025-02-17', '2025-02-17', 0, 1),
-('CUST007', N'Hồ Hoàng G', 'hohoangg', 'password123', 'hohoangg@example.com', '0912345684', N'404 Đường STU, TP. HCM', '2025-02-17', '2025-02-17', 0, 1),
-('CUST008', N'Ngô Minh H', 'ngominhh', 'password123', 'ngominhh@example.com', '0912345685', N'505 Đường VWX, Hà Nội', '2025-02-17', '2025-02-17', 0, 1);
+INSERT INTO customer (customer_code, fullname, username, [password], email, phone, create_date, update_date, forget_password, [status]) VALUES
+('CUST001', N'Nguyễn Hoàng A', 'nguyenhoanga', 'password123', 'nguyenhoanga@example.com', '0912345678', '2025-02-17', '2025-02-17', 0, 1),
+('CUST002', N'Nguyễn Thị B', 'nguyenthithb', 'password123', 'nguyenthithb@example.com', '0912345679',  '2025-02-17', '2025-02-17', 0, 1),
+('CUST003', N'Phạm Minh C', 'phamminhc', 'password123', 'phamminhc@example.com', '0912345680',  '2025-02-17', '2025-02-17', 0, 1),
+('CUST004', N'Lê Quang D', 'lequangd', 'password123', 'lequangd@example.com', '0912345681', '2025-02-17', '2025-02-17', 0, 1),
+('CUST005', N'Vũ Minh E', 'vuminhe', 'password123', 'vuminhe@example.com', '0912345682', '2025-02-17', '2025-02-17', 0, 1),
+('CUST006', N'Trần Thi F', 'tranthif', 'password123', 'tranthif@example.com', '0912345683', '2025-02-17', '2025-02-17', 0, 1),
+('CUST007', N'Hồ Hoàng G', 'hohoangg', 'password123', 'hohoangg@example.com', '0912345684', '2025-02-17', '2025-02-17', 0, 1),
+('CUST008', N'Ngô Minh H', 'ngominhh', 'password123', 'ngominhh@example.com', '0912345685', '2025-02-17', '2025-02-17', 0, 1);
 
 --DELETE FROM [address];
 --DBCC CHECKIDENT ('[address]', RESEED, 0);
