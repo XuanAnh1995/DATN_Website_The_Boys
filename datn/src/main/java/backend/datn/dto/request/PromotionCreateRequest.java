@@ -2,37 +2,29 @@ package backend.datn.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class VoucherUpdateRequest implements Serializable {
-
+public class PromotionCreateRequest implements Serializable {
+    Integer id;
     @NotNull
-    @Size(max = 250)
-    String voucherName;
     @Size(max = 255)
-    String description;
+    String promotionName;
     @NotNull
-    BigDecimal minCondition;
-    @NotNull
-    BigDecimal maxDiscount;
-    @NotNull
-    Double reducedPercent;
+    Integer promotionPercent;
     @NotNull
     Instant startDate;
     @NotNull
     Instant endDate;
     @NotNull
+    @Size(max = 500)
+    String description;
+    @NotNull
     Boolean status;
-
 }

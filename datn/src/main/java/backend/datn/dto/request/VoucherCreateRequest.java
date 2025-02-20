@@ -35,5 +35,5 @@ public class VoucherCreateRequest implements Serializable {
     @NotNull
     Instant endDate;
     @NotNull
-    Integer status;
+    Boolean status;
 }

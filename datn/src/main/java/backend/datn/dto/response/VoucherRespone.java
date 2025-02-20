@@ -18,5 +18,5 @@ public class VoucherRespone {
     Double reducedPercent;
     Instant startDate;
     Instant endDate;
-    Integer status;
+    Boolean status;
 }
