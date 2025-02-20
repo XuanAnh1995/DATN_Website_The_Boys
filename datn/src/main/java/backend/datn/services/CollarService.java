@@ -42,11 +42,11 @@ public class CollarService {
 
     @Transactional
     public CollarResponse createCollar(CollarCreateRequest collarCreateRequest) {
-        if (collarRepository.existsByCollarName(collarCreateRequest.getCollarName())) {
-            throw new ResourceNotFoundException("Collar with name " + collarCreateRequest.getCollarName() + " already exists");
+        if (collarRepository.existsByCollarName(collarCreateRequest.getName())) {
+            throw new ResourceNotFoundException("Collar with name " + collarCreateRequest.getName() + " already exists");
         }
         Collar collar = new Collar();
-        collar.setCollarName(collarCreateRequest.getCollarName());
+        collar.setCollarName(collarCreateRequest.getName());
         collar.setStatus(collarCreateRequest.getStatus());
         collar = collarRepository.save(collar);
         return CollarMapper.toCollarResponse(collar);

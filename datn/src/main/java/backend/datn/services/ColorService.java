@@ -42,11 +42,11 @@ public class ColorService {
 
     @Transactional
     public ColorResponse createColor(ColorCreateRequest colorCreateRequest) {
-        if (colorRepository.existsByColorName(colorCreateRequest.getColorName())) {
-            throw new ResourceNotFoundException("Color with name " + colorCreateRequest.getColorName() + " already exists");
+        if (colorRepository.existsByColorName(colorCreateRequest.getName())) {
+            throw new ResourceNotFoundException("Color with name " + colorCreateRequest.getName() + " already exists");
         }
         Color color = new Color();
-        color.setColorName(colorCreateRequest.getColorName());
+        color.setColorName(colorCreateRequest.getName());
         color.setStatus(colorCreateRequest.getStatus());
         color = colorRepository.save(color);
         return ColorMapper.toColorResponse(color);

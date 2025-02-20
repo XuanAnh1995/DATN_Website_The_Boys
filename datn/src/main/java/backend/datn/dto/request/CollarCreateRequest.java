@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class CollarCreateRequest {
     @NotBlank(message = "Name is mandatory")
-    private String collarName;
+    private String name;
 
     @NotNull(message = "Status is mandatory")
     private Boolean status;
