@@ -149,7 +149,7 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE [address] (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id INT IDENTITY(1,1) NOT NULL,
     customer_id INT NOT NULL,
     province_id INT NOT NULL,
 	province_name NVARCHAR(50) NOT NULL,
@@ -162,29 +162,25 @@ CREATE TABLE [address] (
 
 CREATE TABLE [order] (
     id INT IDENTITY(1,1) NOT NULL,
-	[employee_id] INT,
+    employee_id INT,
     voucher_id INT,
     customer_id INT NOT NULL,
-	order_code VARCHAR(50) NOT NULL,
+    order_code VARCHAR(50) NOT NULL UNIQUE,
     create_date DATETIME NOT NULL,
     total_amount INT NOT NULL,
-	total_bill DECIMAL(18, 2) NOT NULL,
-	payment_method INT NOT NULL,
-
-    status_order INT NOT NULL CHECK (status_order IN (0, 1, 2, 3, 4)),		
-									-- 0: Chờ xác nhận
-									-- 1: Đã xác nhận
-									-- 2: Đang giao hàng
-									-- 3: Giao hàng không thành công
-									-- 4: Hoàn thành
-
-	status_payment BIT NOT NULL CHECK (status_payment IN (0, 1)),	
-									-- 0: Chưa thanh toán
-									-- 1: Đã thanh toán
-
-	kind_of_order BIT NOT NULL CHECK (kind_of_order IN (0, 1))
-									-- 0: Online
-									-- 1: Ofline
+    total_bill DECIMAL(18, 2) NOT NULL,
+    payment_method INT NOT NULL,
+    kind_of_order BIT NOT NULL CHECK (kind_of_order IN (0, 1)),  
+                                     -- 0: Online
+                                     -- 1: Offline
+    status_order INT NOT NULL CHECK (status_order IN (-1, 0, 1, 2, 3, 4, 5))
+                                      -- -1: Đã hủy
+                                      --  0: Chờ xác nhận
+                                      --  1: Chờ thanh toán
+                                      --  2: Đã xác nhận
+                                      --  3: Đang giao hàng
+                                      --  4: Giao hàng không thành công
+                                      --  5: Hoàn thành
 );
 
 CREATE TABLE order_detail (
@@ -201,6 +197,14 @@ CREATE TABLE cart (
     product_detail_id INT NOT NULL,
     quantity INT NOT NULL
 );
+
+-- ** Chỉ mục (INDEX) tối ưu hiệu suất tìm kiếm
+
+CREATE INDEX idx_product_code ON [product](product_code);
+CREATE INDEX idx_order_code ON [order](order_code);
+CREATE INDEX idx_customer_email ON customer(email);
+CREATE INDEX idx_employee_username ON employee(username);
+
 
 -- ** PHẦN PK, FK CHO CÁC TABLE CỦA DATABASE
 
@@ -221,8 +225,19 @@ ALTER TABLE customer ADD CONSTRAINT PK_customer PRIMARY KEY(id)
 ALTER TABLE [order] ADD CONSTRAINT PK_order PRIMARY KEY(id)
 ALTER TABLE order_detail ADD CONSTRAINT PK_order_detail PRIMARY KEY(id)
 ALTER TABLE cart ADD CONSTRAINT PK_cart PRIMARY KEY(id)
+ALTER TABLE [address] ADD CONSTRAINT PK_address PRIMARY KEY (id);
+ALTER TABLE [address] ADD is_default BIT NOT NULL DEFAULT(0);
+
 
 -- Thiết lập mã code là duy nhất cho 1 số bảng 
+ALTER TABLE color ADD CONSTRAINT UQ_color_name UNIQUE (color_name);
+ALTER TABLE brand ADD CONSTRAINT UQ_brand_name UNIQUE (brand_name);
+ALTER TABLE category ADD CONSTRAINT UQ_category_name UNIQUE (category_name);
+ALTER TABLE collar ADD CONSTRAINT UQ_collar_name UNIQUE (collar_name);
+ALTER TABLE material ADD CONSTRAINT UQ_material_name UNIQUE (material_name);
+ALTER TABLE size ADD CONSTRAINT UQ_size_name UNIQUE (size_name);
+ALTER TABLE sleeve ADD CONSTRAINT UQ_sleeve_name UNIQUE (sleeve_name);
+
 
 ALTER TABLE [order] ADD CONSTRAINT UQ_order_code UNIQUE (order_code);
 ALTER TABLE product_detail ADD CONSTRAINT UQ_product_detail_code UNIQUE(product_detail_code);
@@ -519,28 +534,28 @@ INSERT INTO [address] (customer_id, province_id, province_name, district_id, dis
 --DELETE FROM [order];
 --DBCC CHECKIDENT ('[order]', RESEED, 0);
 
-INSERT INTO [order] (employee_id, voucher_id, customer_id, order_code, create_date, total_amount, total_bill, payment_method, status_order, status_payment, kind_of_order) 
+INSERT INTO [order] (employee_id, voucher_id, customer_id, order_code, create_date, total_amount, total_bill, payment_method, status_order, kind_of_order)
 VALUES
-		(NULL, 1, 1, 'ORD001', '2025-02-01 10:30:00', 5, 600000, 1, 1, 1, 0),
-		(NULL, 2, 2, 'ORD002', '2025-02-01 11:00:00', 3, 450000, 2, 2, 1, 0),
-		(3, 3, 3, 'ORD003', '2025-02-01 12:15:00', 4, 550000, 1, 2, 0, 1),
-		(NULL, 4, 4, 'ORD004', '2025-02-02 14:45:00', 2, 300000, 2, 3, 1, 0),
-		(5, 5, 5, 'ORD005', '2025-02-02 16:00:00', 6, 720000, 1, 1, 0, 1),
-		(NULL, 6, 6, 'ORD006', '2025-02-02 18:00:00', 5, 650000, 2, 2, 1, 0),
-		(7, 1, 7, 'ORD007', '2025-02-03 09:00:00', 7, 840000, 1, 1, 0, 1),
-		(NULL, 2, 8, 'ORD008', '2025-02-03 10:30:00', 8, 960000, 1, 3, 0, 0),
-		(1, 3, 1, 'ORD009', '2025-02-03 12:00:00', 4, 500000, 1, 2, 0, 1),
-		(NULL, 4, 2, 'ORD010', '2025-02-03 14:30:00', 3, 400000, 2, 1, 1, 0),
-		(NULL, 5, 3, 'ORD011', '2025-02-03 15:00:00', 6, 720000, 1, 3, 0, 0),
-		(4, 6, 4, 'ORD012', '2025-02-04 09:15:00', 5, 600000, 1, 2, 0, 1),
-		(NULL, 1, 5, 'ORD013', '2025-02-04 11:00:00', 4, 480000, 2, 1, 1, 0),
-		(NULL, 2, 6, 'ORD014', '2025-02-04 13:30:00', 3, 360000, 1, 2, 1, 0),
-		(NULL, 3, 7, 'ORD015', '2025-02-04 15:00:00', 6, 720000, 1, 1, 0, 0),
-		(8, 4, 8, 'ORD016', '2025-02-05 10:00:00', 7, 840000, 1, 2, 1, 1),
-		(1, 5, 1, 'ORD017', '2025-02-05 11:30:00', 3, 450000, 2, 1, 0, 1),
-		(NULL, 6, 2, 'ORD018', '2025-02-05 12:00:00', 4, 500000, 1, 3, 0, 0),
-		(NULL, 1, 3, 'ORD019', '2025-02-05 13:45:00', 5, 600000, 2, 1, 0, 0),
-		(4, 2, 4, 'ORD020', '2025-02-05 14:30:00', 6, 720000, 1, 1, 0, 1);
+    (1, 1, 1, 'ORD001', '2025-02-01 10:30:00', 5, 600000, 1, 1, 0),
+    (2, 2, 2, 'ORD002', '2025-02-01 11:00:00', 3, 450000, 2, 2, 0),
+    (3, 3, 3, 'ORD003', '2025-02-01 12:15:00', 4, 550000, 1, 2, 1),
+    (3, 4, 4, 'ORD004', '2025-02-02 14:45:00', 2, 300000, 2, 3, 0),
+    (5, 5, 5, 'ORD005', '2025-02-02 16:00:00', 6, 720000, 1, 1, 1),
+    (4, 6, 6, 'ORD006', '2025-02-02 18:00:00', 5, 650000, 2, 2, 0),
+    (7, 1, 7, 'ORD007', '2025-02-03 09:00:00', 7, 840000, 1, 1, 1),
+    (5, 2, 8, 'ORD008', '2025-02-03 10:30:00', 8, 960000, 1, 3, 0),
+    (1, 3, 1, 'ORD009', '2025-02-03 12:00:00', 4, 500000, 1, 2, 1),
+    (6, 4, 2, 'ORD010', '2025-02-03 14:30:00', 3, 400000, 2, 1, 0),
+    (7, 5, 3, 'ORD011', '2025-02-03 15:00:00', 6, 720000, 1, 3, 0),
+    (4, 6, 4, 'ORD012', '2025-02-04 09:15:00', 5, 600000, 1, 2, 1),
+    (8, 1, 5, 'ORD013', '2025-02-04 11:00:00', 4, 480000, 2, 1, 0),
+    (1, 2, 6, 'ORD014', '2025-02-04 13:30:00', 3, 360000, 1, 2, 0),
+    (2, 3, 7, 'ORD015', '2025-02-04 15:00:00', 6, 720000, 1, 1, 0),
+    (8, 4, 8, 'ORD016', '2025-02-05 10:00:00', 7, 840000, 1, 2, 1),
+    (1, 5, 1, 'ORD017', '2025-02-05 11:30:00', 3, 450000, 2, 1, 1),
+    (3, 6, 2, 'ORD018', '2025-02-05 12:00:00', 4, 500000, 1, 3, 0),
+    (4, 1, 3, 'ORD019', '2025-02-05 13:45:00', 5, 600000, 2, 1, 0),
+    (4, 2, 4, 'ORD020', '2025-02-05 14:30:00', 6, 720000, 1, 1, 1);
 
 INSERT INTO order_detail (order_id, product_detail_id, quantity)
 VALUES
