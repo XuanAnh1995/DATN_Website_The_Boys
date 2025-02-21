@@ -29,10 +29,10 @@ public class BrandController {
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
             Page<BrandResponse> brandPage = brandService.getAllBrand(search, page, size, sortBy, sortDir);
-            ApiResponse response = new ApiResponse("success", "Get all brand successfully", brandPage);
+            ApiResponse response = new ApiResponse("success", "Lấy được danh sách thương hiệu thành công", brandPage);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the brand list", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất danh sách thương hiệu", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -41,13 +41,13 @@ public class BrandController {
     public ResponseEntity<ApiResponse> getBrandById(@PathVariable int id) {
         try {
             BrandResponse brandResponse = brandService.getBrandById(id);
-            ApiResponse response = new ApiResponse("success", "Get brand by id successfully", brandResponse);
+            ApiResponse response = new ApiResponse("success", "Lấy thương hiệu theo id thành công", brandResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the brand", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất thương hiệu", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -56,14 +56,14 @@ public class BrandController {
     public ResponseEntity<ApiResponse> createBrand(@RequestBody BrandCreateRequest brandCreateRequest) {
         try {
             BrandResponse brandResponse = brandService.createBrand(brandCreateRequest);
-            ApiResponse response = new ApiResponse("success", "Create brand successfully", brandResponse);
+            ApiResponse response = new ApiResponse("success", "Thêm mới thương hiệu thành công", brandResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
         catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while creating the brand", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi thêm mới thương hiệu", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,7 +72,7 @@ public class BrandController {
     public ResponseEntity<ApiResponse> updateBrand(@PathVariable int id, @RequestBody BrandUpdateRequest brandUpdateRequest) {
         try {
             BrandResponse brandResponse = brandService.updateBrand(id, brandUpdateRequest);
-            ApiResponse response = new ApiResponse("success", "Update brand successfully", brandResponse);
+            ApiResponse response = new ApiResponse("success", "Cập nhật thương hiệu thành công", brandResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(EntityNotFoundException e){
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
@@ -82,37 +82,23 @@ public class BrandController {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while updating the brand", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi cập nhật thương hiệu", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteBrand(@PathVariable Integer id){
-        try {
-            brandService.deleteBrand(id);
-            ApiResponse response = new ApiResponse("success", "Delete brand successfully", null);
-            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
-        } catch (EntityNotFoundException e) {
-            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while deleting the brand", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     @PutMapping("/{id}/toggle-status")
     public ResponseEntity<ApiResponse> toggleStatusBrand(@PathVariable Integer id){
         try {
             BrandResponse brandResponse = brandService.toggleStatusBrand(id);
-            ApiResponse response = new ApiResponse("success", "Toggle status brand successfully", brandResponse);
+            ApiResponse response = new ApiResponse("success", "Chuyển đổi trạng thái thương hiệu thành công", brandResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the brand", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi chuyển đổi trạng thái của thương hiệu", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

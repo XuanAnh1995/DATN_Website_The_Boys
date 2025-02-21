@@ -29,10 +29,10 @@ public class SleeveController {
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
             Page<SleeveResponse> sleeveResponsePage = sleeveService.getAllSleeves(search, page, size, sortBy, sortDir);
-            ApiResponse response = new ApiResponse("success", "Get all sleeve successfully", sleeveResponsePage);
+            ApiResponse response = new ApiResponse("success", "Lấy được danh sách tay áo thành công", sleeveResponsePage);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the sleeve list", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất danh sách tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -41,13 +41,13 @@ public class SleeveController {
     public ResponseEntity<ApiResponse> getSleeveById(@PathVariable int id) {
         try {
             SleeveResponse sleeveResponse = sleeveService.getSleeveById(id);
-            ApiResponse response = new ApiResponse("success", "Get sleeve by id successfully", sleeveResponse);
+            ApiResponse response = new ApiResponse("success", "Lấy tay áo theo id thành công", sleeveResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the sleeve", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -56,14 +56,14 @@ public class SleeveController {
     public ResponseEntity<ApiResponse> createSleeve(@RequestBody SleeveCreateRequest sleeveCreateRequest) {
         try {
             SleeveResponse sleeveResponse = sleeveService.createSleeve(sleeveCreateRequest);
-            ApiResponse response = new ApiResponse("success", "Create sleeve successfully", sleeveResponse);
+            ApiResponse response = new ApiResponse("success", "Thêm mới tay áo thành công", sleeveResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
         catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while creating the sleeve", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi thêm mới tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,7 +72,7 @@ public class SleeveController {
     public ResponseEntity<ApiResponse> updateSleeve(@PathVariable int id, @RequestBody SleeveUpdateRequest sleeveUpdateRequest) {
         try {
             SleeveResponse sleeveResponse = sleeveService.updateSleeve(id, sleeveUpdateRequest);
-            ApiResponse response = new ApiResponse("success", "Update sleeve successfully", sleeveResponse);
+            ApiResponse response = new ApiResponse("success", "Cập nhật tay áo thành công", sleeveResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(EntityNotFoundException e){
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
@@ -82,22 +82,7 @@ public class SleeveController {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while updating the sleeve", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteSleeve(@PathVariable Integer id){
-        try {
-            sleeveService.deleteSleeve(id);
-            ApiResponse response = new ApiResponse("success", "Delete sleeve successfully", null);
-            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
-        } catch (EntityNotFoundException e) {
-            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while deleting the sleeve", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi cập nhật tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -106,13 +91,13 @@ public class SleeveController {
     public ResponseEntity<ApiResponse> toggleStatusSleeve(@PathVariable Integer id){
         try {
             SleeveResponse sleeveResponse = sleeveService.toggleSleeveStatus(id);
-            ApiResponse response = new ApiResponse("success", "Toggle status sleeve successfully", sleeveResponse);
+            ApiResponse response = new ApiResponse("success", "Chuyển đổi trạng thái tay áo thành công", sleeveResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the sleeve", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi chuyển đổi trạng thái của tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

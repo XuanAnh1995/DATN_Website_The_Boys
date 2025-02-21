@@ -38,19 +38,18 @@ public class SleeveService {
 
     public SleeveResponse getSleeveById(Integer id){
         Sleeve sleeve = sleeveRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sleeve not found with id : " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tay áo có id : " + id));
         return SleeveMapper.toSleeveResponse(sleeve);
     }
 
     @Transactional
     public SleeveResponse createSleeve(SleeveCreateRequest sleeveCreateRequest){
         if(sleeveRepository.existsBySleeveName(sleeveCreateRequest.getSleeveName())){
-            throw  new ResourceNotFoundException("Sleeve with name " + sleeveCreateRequest.getSleeveName() + "already exists");
+            throw  new EntityAlreadyExistsException("Tay áo có tên " + sleeveCreateRequest.getSleeveName() + " đã tồn tại");
         }
 
         Sleeve sleeve = new Sleeve();
         sleeve.setSleeveName(sleeveCreateRequest.getSleeveName());
-        sleeve.setStatus(sleeveCreateRequest.getStatus());
 
         sleeve = sleeveRepository.save(sleeve);
         return SleeveMapper.toSleeveResponse(sleeve);
@@ -59,14 +58,13 @@ public class SleeveService {
     @Transactional
     public SleeveResponse updateSleeve(Integer id, SleeveUpdateRequest sleeveUpdateRequest){
         Sleeve sleeve = sleeveRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sleeve not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tay áo có id: " + id));
 
         if (sleeve.getSleeveName().equalsIgnoreCase(sleeveUpdateRequest.getSleeveName()) && sleeveRepository.existsBySleeveName(sleeveUpdateRequest.getSleeveName())){
-            throw new EntityAlreadyExistsException("Sleeve with name: " + sleeveUpdateRequest.getSleeveName() + "already exists");
+            throw new EntityAlreadyExistsException("Tay áo có tên: " + sleeveUpdateRequest.getSleeveName() + " đã tồn tại");
         }
 
         sleeve.setSleeveName(sleeveUpdateRequest.getSleeveName());
-        sleeve.setStatus(sleeveUpdateRequest.getStatus());
 
         sleeve = sleeveRepository.save(sleeve);
         return SleeveMapper.toSleeveResponse(sleeve);
@@ -75,19 +73,11 @@ public class SleeveService {
     @Transactional
     public SleeveResponse toggleSleeveStatus(Integer id){
         Sleeve sleeve = sleeveRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sleeve not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tay áo có id: " + id));
 
         sleeve.setStatus(!sleeve.getStatus());
         sleeve = sleeveRepository.save(sleeve);
         return SleeveMapper.toSleeveResponse(sleeve);
-    }
-
-    @Transactional
-    public void deleteSleeve(Integer id){
-        Sleeve sleeve = sleeveRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Sleeve not found with id: " + id));
-
-        sleeveRepository.delete(sleeve);
     }
 
 

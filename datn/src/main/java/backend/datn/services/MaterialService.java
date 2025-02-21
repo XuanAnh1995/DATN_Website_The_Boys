@@ -23,8 +23,6 @@ public class MaterialService {
 
     @Autowired
     private MaterialRepository materialRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     public Page<MaterialResponse> getAllMaterials(String search, int page, int size, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
@@ -40,18 +38,17 @@ public class MaterialService {
 
     public MaterialResponse getMaterialById(int id) {
         Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Material not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chất liệu có id " + id));
         return MaterialMapper.toMaterialResponse(material);
     }
 
     @Transactional
     public MaterialResponse createMaterial(MaterialCreateRequest materialCreateRequest) {
         if (materialRepository.existsByMaterialName(materialCreateRequest.getMaterialName())) {
-            throw new ResourceNotFoundException("Material with name " + materialCreateRequest.getMaterialName() + " already exists");
+            throw new EntityAlreadyExistsException("Chất liệu có tên " + materialCreateRequest.getMaterialName() + " đã tồn tại");
         }
         Material material = new Material();
         material.setMaterialName(materialCreateRequest.getMaterialName());
-        material.setStatus(materialCreateRequest.getStatus());
         material = materialRepository.save(material);
         return MaterialMapper.toMaterialResponse(material);
     }
@@ -59,15 +56,14 @@ public class MaterialService {
     @Transactional
     public MaterialResponse updateMaterial(Integer id, MaterialUpdateRequest materialUpdateRequest) {
         Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Material not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chất liệu có id " + id));
 
         if (material.getMaterialName().equalsIgnoreCase(materialUpdateRequest.getMaterialName())
                 && materialRepository.existsByMaterialName(materialUpdateRequest.getMaterialName())) {
-            throw new EntityAlreadyExistsException("Material with name " + materialUpdateRequest.getMaterialName() + "already exists");
+            throw new EntityAlreadyExistsException("Chất liệu có tên " + materialUpdateRequest.getMaterialName() + " đã tồn tại");
         }
 
         material.setMaterialName(materialUpdateRequest.getMaterialName());
-        material.setStatus(materialUpdateRequest.getStatus());
 
         material = materialRepository.save(material);
 
@@ -77,18 +73,12 @@ public class MaterialService {
     @Transactional
     public MaterialResponse toggleMaterialStatus(Integer id) {
         Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Material not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chất liệu có id: " + id));
         material.setStatus(!material.getStatus());
         material = materialRepository.save(material);
         return MaterialMapper.toMaterialResponse(material);
     }
 
-    @Transactional
-    public void deleteMaterial(Integer id){
-        Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Material not found with id: " + id));
-        materialRepository.delete(material);
-    }
 
 
 }

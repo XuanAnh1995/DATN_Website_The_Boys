@@ -37,19 +37,18 @@ public class BrandService {
 
     public BrandResponse getBrandById(int id) {
         Brand brand = brandRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
+                orElseThrow(() -> new RuntimeException("Không tìm thấy thương hiệu có id: " + id));
         return BrandMapper.toBrandResponse(brand);
     }
 
     @Transactional
     public BrandResponse createBrand(BrandCreateRequest brandCreateRequest) {
         if (brandRepository.existsByBrandName(brandCreateRequest.getBrandName())) {
-            throw new ResourceNotFoundException("Brand with name: " + brandCreateRequest.getBrandName() + " already exists");
+            throw new EntityAlreadyExistsException("Thương hiệu có tên: " + brandCreateRequest.getBrandName() + " đã tồn tại");
         }
 
         Brand brand = new Brand();
         brand.setBrandName(brandCreateRequest.getBrandName());
-        brand.setStatus(brandCreateRequest.getStatus());
 
         brand = brandRepository.save(brand);
         return BrandMapper.toBrandResponse(brand);
@@ -58,14 +57,13 @@ public class BrandService {
     @Transactional
     public BrandResponse updateBrand(Integer id, BrandUpdateRequest brandUpdateRequest) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Brand not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thương hiệu có id: " + id));
 
         if (brand.getBrandName().equalsIgnoreCase(brandUpdateRequest.getBrandName()) && brandRepository.existsByBrandName(brandUpdateRequest.getBrandName())) {
-            throw new EntityAlreadyExistsException("Brand with name: " + brandUpdateRequest.getBrandName() + " already exists");
+            throw new EntityAlreadyExistsException("Thương hiệu có tên: " + brandUpdateRequest.getBrandName() + " đã tồn tại");
         }
 
         brand.setBrandName(brandUpdateRequest.getBrandName());
-        brand.setStatus(brandUpdateRequest.getStatus());
         brand = brandRepository.save(brand);
         return BrandMapper.toBrandResponse(brand);
     }
@@ -73,19 +71,12 @@ public class BrandService {
     @Transactional
     public BrandResponse toggleStatusBrand(Integer id) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Brand not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thương hiệu có id: " + id));
 
         brand.setStatus(!brand.getStatus());
         brand = brandRepository.save(brand);
         return BrandMapper.toBrandResponse(brand);
     }
 
-    @Transactional
-    public void deleteBrand(Integer id) {
-        Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Brand not found with id: " + id));
-
-        brandRepository.delete(brand);
-    }
 
 }
