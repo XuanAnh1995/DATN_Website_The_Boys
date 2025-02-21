@@ -15,5 +15,4 @@ import java.io.Serializable;
 public class BrandCreateRequest implements Serializable {
     @NotNull(message = "Vui lòng điền thông tin tên nhãn hàng")
     String brandName;
-    Boolean status;
 }

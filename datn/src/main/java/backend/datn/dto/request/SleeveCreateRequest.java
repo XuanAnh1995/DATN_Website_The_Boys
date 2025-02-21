@@ -14,8 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 public class SleeveCreateRequest implements Serializable {
+    @NotNull(message = "Vui lòng điền thông tin tên tay áo")
     @Size(min = 30, max = 60)
     String sleeveName;
-    @NotNull
-    Boolean status;
 }

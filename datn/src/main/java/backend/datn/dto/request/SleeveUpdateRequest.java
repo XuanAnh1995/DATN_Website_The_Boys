@@ -15,9 +15,9 @@ import java.io.Serializable;
 @Builder
 
 public class SleeveUpdateRequest implements Serializable {
-    Integer id;
-    @Size(message = "Vui lòng điền tên tay áo")
-    String sleeveName;
     @NotNull
-    Boolean status;
+    Integer id;
+
+    @NotNull(message = "Vui lòng điền thông tin tên tay áo")
+    String sleeveName;
 }
