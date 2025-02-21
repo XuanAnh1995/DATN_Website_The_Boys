@@ -20,20 +20,9 @@ public class OrderCreateRequet implements Serializable {
     @NotNull
     CustomerCreateRequest customer;
     @NotNull
-    @Size(max = 50)
-    String orderCode;
-    @NotNull
-    Instant createDate;
-    @NotNull
-    Integer totalAmount;
-    @NotNull
-    BigDecimal totalBill;
-    @NotNull
     Integer paymentMethod;
     @NotNull
     Integer statusOrder;
-    @NotNull
-    Integer statusPayment;
     @NotNull
     Integer kindOfOrder;
 }

@@ -1,7 +1,10 @@
 package backend.datn.controllers;
 
+import backend.datn.dto.ApiResponse;
+import backend.datn.dto.response.BrandResponse;
 import backend.datn.dto.response.OrderRespone;
 import backend.datn.entities.Order;
+import backend.datn.exceptions.EntityNotFoundException;
 import backend.datn.mapper.OrderMapper;
 import backend.datn.repositories.OrderRepository;
 import backend.datn.services.OrderSevice;
@@ -10,30 +13,48 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@RestController // Đổi @Controller thành @RestController
+@RestController
 @RequestMapping("/api/order")
 public class OrderController {
     @Autowired
-    private OrderSevice orderService; // Đổi OrderSevice thành
+    private OrderSevice orderService;
     @Autowired
     OrderRepository orderRepository;
 
     @GetMapping
-    public Page<OrderRespone> getAllOrder(
+    public ResponseEntity<ApiResponse> getAlOrder(
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDir) {
-        Sort sort=sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
-        Pageable pageable= PageRequest.of(page,size,sort);
-        Page<Order> orderPage=orderRepository.searchOrder(search,pageable);
-        return orderPage.map(OrderMapper::toOrderRespone);
+        try {
+            Page<OrderRespone> orderPage = orderService.getAllOrder(search, page, size, sortBy, sortDir);
+            ApiResponse response = new ApiResponse("success", "Get all order successfully", orderPage);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the order list", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getOrderId(@PathVariable int id) {
+        try {
+            OrderRespone orderRespone = orderService.getOrderById(id);
+            ApiResponse response = new ApiResponse("success", "Get brand by id successfully", orderRespone);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the order", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

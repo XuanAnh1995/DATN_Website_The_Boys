@@ -1,5 +1,6 @@
 package backend.datn.services;
 
+
 import backend.datn.dto.response.OrderRespone;
 import backend.datn.entities.Order;
 import backend.datn.mapper.OrderMapper;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class OrderSevice {
@@ -24,5 +26,14 @@ public class OrderSevice {
 
         return orderPage.map(OrderMapper::toOrderRespone);
     }
+
+    public OrderRespone getOrderById(int id) {
+        Order order = orderRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("order not found with id: " + id));
+        return OrderMapper.toOrderRespone(order);
+    }
+
+
+
 }
 
