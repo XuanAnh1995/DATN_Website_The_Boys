@@ -9,30 +9,21 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerUpdateRequest  {
-    @NotNull
-    @Size(max = 50)
-    String customerCode;
-    @Size(max = 255)
+public class CustomerUpdateRequest {
+    @Size(max = 255, message = "Full name cannot exceed 255 characters")
     String fullname;
-    @NotNull
-    @Size(max = 100)
-    String username;
-    @NotNull
-    @Size(max = 255)
-    String password;
-    @Size(max = 255)
+
+    @Size(max = 255, message = "Email cannot exceed 255 characters")
     String email;
-    @Size(max = 20)
+
+    @Size(max = 20, message = "Phone number cannot exceed 20 characters")
     String phone;
-    @Size(max = 255)
+
+    @Size(max = 255, message = "Address cannot exceed 255 characters")
     String address;
-    Instant createDate;
-    Instant updateDate;
-    Boolean forgetPassword;
+
 }

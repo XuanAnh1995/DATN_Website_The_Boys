@@ -6,20 +6,17 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.Instant;
 
-
 @Data
 @Builder
-public class CustomerRespone implements Serializable {
+public class CustomerResponse implements Serializable {
     Integer id;
     String customerCode;
     String fullname;
     String username;
-    String password;
     String email;
     String phone;
-    String address;
     Instant createDate;
     Instant updateDate;
     Boolean forgetPassword;
-    Integer status;
+    Boolean status;
 }
