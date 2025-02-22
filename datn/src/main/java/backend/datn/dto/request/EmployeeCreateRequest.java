@@ -11,41 +11,36 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.Instant;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import lombok.Data;
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class EmployeeCreateRequest implements Serializable {
-    @NotNull
-    @Size(max = 50)
-    String employeeCode;
-    @NotNull
-    Role role;
-    @NotNull
-    @Size(max = 255)
+    @NotNull(message = "ID vai trò không được để trống")
+    String roleId;
+
+    @Size(max = 255, message = "Họ và tên không được vượt quá 255 ký tự")
     String fullname;
-    @NotNull
-    @Size(max = 100)
+
+    @NotNull(message = "Tên đăng nhập không được để trống")
+    @Size(max = 100, message = "Tên đăng nhập không được vượt quá 100 ký tự")
     String username;
-    @NotNull
-    @Size(max = 255)
-    String password;
-    @NotNull
-    @Size(max = 255)
+
+    @Email(message = "Email phải hợp lệ")
+    @Size(max = 255, message = "Email không được vượt quá 255 ký tự")
     String email;
-    @NotNull
-    @Size(max = 20)
+
+    @Size(max = 20, message = "Số điện thoại không được vượt quá 20 ký tự")
     String phone;
-    @NotNull
-    @Size(max = 250)
+
+    @Size(max = 255, message = "Địa chỉ không được vượt quá 255 ký tự")
+    String address;
+
+    @Size(max = 255, message = "URL ảnh không được vượt quá 255 ký tự")
     String photo;
-    @NotNull
-    Integer status;
-    @NotNull
-    Instant createDate;
-    @NotNull
-    Instant updateDate;
-    Boolean forgetPassword;
-    @NotNull
+
+    @NotNull(message = "Giới tính không được để trống")
     Boolean gender;
 }
