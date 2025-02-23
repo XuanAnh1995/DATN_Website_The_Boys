@@ -4,7 +4,6 @@ import backend.datn.dto.ApiResponse;
 import backend.datn.dto.request.ColorCreateRequest;
 import backend.datn.dto.request.ColorUpdateRequest;
 import backend.datn.dto.response.ColorResponse;
-import backend.datn.dto.response.SizeResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
 import backend.datn.services.ColorService;
@@ -25,13 +24,13 @@ public class ColorController {
     public ResponseEntity<ApiResponse> getColorById(@PathVariable Integer id) {
         try {
             ColorResponse colorResponse = colorService.getColorById(id);
-            ApiResponse response = new ApiResponse("success", "Color retrieved successfully", colorResponse);
+            ApiResponse response = new ApiResponse("success", "Lấy màu sắc theo id thành công", colorResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the Color", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất màu sắc", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -41,13 +40,13 @@ public class ColorController {
     public ResponseEntity<ApiResponse> createColor(@RequestBody ColorCreateRequest colorCreateRequest) {
         try {
             ColorResponse colorResponse = colorService.createColor(colorCreateRequest);
-            ApiResponse response = new ApiResponse("success", "Color created successfully", colorResponse);
+            ApiResponse response = new ApiResponse("success", "Thêm mới màu sắc thành công", colorResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while creating the color", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi thêm mới màu sắc", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -60,10 +59,10 @@ public class ColorController {
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
             Page<ColorResponse> colors = colorService.getAllColors(search, page, size, sortBy, sortDir);
-            ApiResponse response = new ApiResponse("success", "Colors retrieved successfully",colors);
+            ApiResponse response = new ApiResponse("success", "Lấy được danh sách màu sắc thành công",colors);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the colors", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất danh sách màu sắc", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -71,7 +70,7 @@ public class ColorController {
     public ResponseEntity<ApiResponse> updateColor(@PathVariable Integer id, @RequestBody ColorUpdateRequest colorUpdateRequest) {
         try {
             ColorResponse colorResponse = colorService.updateColor(id, colorUpdateRequest);
-            ApiResponse response = new ApiResponse("success", "Color updated successfully", colorResponse);
+            ApiResponse response = new ApiResponse("success", "Cập nhật màu sắc thành công", colorResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
@@ -80,7 +79,7 @@ public class ColorController {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while updating the color", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi cập nhật màu sắc", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,13 +103,13 @@ public class ColorController {
     public ResponseEntity<ApiResponse> toggleStatusColor(@PathVariable Integer id){
         try {
             ColorResponse colorResponse = colorService.toggleColorStatus(id);
-            ApiResponse response = new ApiResponse("success", "Toggle status color successfully", colorResponse);
+            ApiResponse response = new ApiResponse("success", "Chuyển đổi trạng thái màu sắc thành công", colorResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the color", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi chuyển đổi trạng thái của màu sắc", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

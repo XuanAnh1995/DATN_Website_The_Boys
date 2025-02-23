@@ -23,13 +23,13 @@ public class CollarController {
     public ResponseEntity<ApiResponse> getCollarById(@PathVariable Integer id) {
         try {
             CollarResponse collarResponse = collarService.getCollarById(id);
-            ApiResponse response = new ApiResponse("success", "Collar retrieved successfully", collarResponse);
+            ApiResponse response = new ApiResponse("success", "Lấy tay áo theo id thành công", collarResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the collar", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -39,13 +39,13 @@ public class CollarController {
     public ResponseEntity<ApiResponse> createCollar(@RequestBody CollarCreateRequest collarCreateRequest) {
         try {
             CollarResponse collarResponse = collarService.createCollar(collarCreateRequest);
-            ApiResponse response = new ApiResponse("success", "Collar created successfully", collarResponse);
+            ApiResponse response = new ApiResponse("success", "Thêm mới tay áo thành công", collarResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while creating the collar", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi thêm mới tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -59,10 +59,10 @@ public class CollarController {
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
             Page<CollarResponse> collars = collarService.getAllCollars(search, page, size, sortBy, sortDir);
-            ApiResponse response = new ApiResponse("success", "Collars retrieved successfully", collars);
+            ApiResponse response = new ApiResponse("success", "Lấy được danh sách tay áo thành công", collars);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the collars", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất danh sách tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -71,7 +71,7 @@ public class CollarController {
     public ResponseEntity<ApiResponse> updateCollar(@PathVariable Integer id, @RequestBody CollarUpdateRequest collarUpdateRequest) {
         try {
             CollarResponse collarResponse = collarService.updateCollar(id, collarUpdateRequest);
-            ApiResponse response = new ApiResponse("success", "Collar updated successfully", collarResponse);
+            ApiResponse response = new ApiResponse("success", "Cập nhật tay áo thành công", collarResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
@@ -80,7 +80,7 @@ public class CollarController {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while updating the collar", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi cập nhật tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,13 +104,13 @@ public class CollarController {
     public ResponseEntity<ApiResponse> toggleStatusCollar(@PathVariable Integer id){
         try {
             CollarResponse collarResponse = collarService.toggleCollarStatus(id);
-            ApiResponse response = new ApiResponse("success", "Toggle status collar successfully", collarResponse);
+            ApiResponse response = new ApiResponse("success", "Chuyển đổi trạng thái tay áo thành công", collarResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the collar", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi chuyển đổi trạng thái của tay áo", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
