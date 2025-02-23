@@ -36,18 +36,17 @@ public class SizeService {
 
     public SizeResponse getSizeById(Integer id) {
         Size size = sizeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Size not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy kích thước có id: " + id));
         return SizeMapper.toSizeResponse(size);
     }
 
     @Transactional
     public SizeResponse createSize(SizeCreateRequest sizeCreateRequest) {
         if (sizeRepository.existsBySizeName(sizeCreateRequest.getName())) {
-            throw new ResourceNotFoundException("Size with name " + sizeCreateRequest.getName() + " already exists");
+            throw new ResourceNotFoundException("Kích thước có tên: " + sizeCreateRequest.getName() + " đã tồn tại");
         }
         Size size = new Size();
         size.setSizeName(sizeCreateRequest.getName());
-        size.setStatus(sizeCreateRequest.getStatus());
         size = sizeRepository.save(size);
         return SizeMapper.toSizeResponse(size);
     }
@@ -55,13 +54,12 @@ public class SizeService {
     @Transactional
     public SizeResponse updateSize(Integer id, SizeUpdateRequest sizeUpdateRequest) {
         Size size = sizeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Size not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy kích thước có id: " + id));
 
         if(size.getSizeName().equalsIgnoreCase(sizeUpdateRequest.getName()) && sizeRepository.existsBySizeName(sizeUpdateRequest.getName())) {
-            throw new EntityAlreadyExistsException("Size with name " + sizeUpdateRequest.getName() + " already exists");
+            throw new EntityAlreadyExistsException("Kích thước có tên: " + sizeUpdateRequest.getName() + " đã tồn tại");
         }
         size.setSizeName(sizeUpdateRequest.getName());
-        size.setStatus(sizeUpdateRequest.getStatus());
         size = sizeRepository.save(size);
         return SizeMapper.toSizeResponse(size);
     }
@@ -69,14 +67,14 @@ public class SizeService {
     @Transactional
     public void deleteSize(Integer id) {
         Size size = sizeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Size not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy kích thước có id: " + id));
         sizeRepository.delete(size);
     }
 
     @Transactional
     public SizeResponse toggleSizeStatus(Integer id) {
         Size size = sizeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Size not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy kích thước có id: " + id));
         size.setStatus(!size.getStatus());
         size = sizeRepository.save(size);
         return SizeMapper.toSizeResponse(size);
