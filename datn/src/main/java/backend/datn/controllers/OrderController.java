@@ -1,18 +1,12 @@
 package backend.datn.controllers;
 
 import backend.datn.dto.ApiResponse;
-import backend.datn.dto.response.BrandResponse;
-import backend.datn.dto.response.OrderRespone;
-import backend.datn.entities.Order;
+import backend.datn.dto.response.OrderResponse;
 import backend.datn.exceptions.EntityNotFoundException;
-import backend.datn.mapper.OrderMapper;
 import backend.datn.repositories.OrderRepository;
 import backend.datn.services.OrderSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +27,7 @@ public class OrderController {
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
-            Page<OrderRespone> orderPage = orderService.getAllOrder(search, page, size, sortBy, sortDir);
+            Page<OrderResponse> orderPage = orderService.getAllOrder(search, page, size, sortBy, sortDir);
             ApiResponse response = new ApiResponse("success", "Get all order successfully", orderPage);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -45,7 +39,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getOrderId(@PathVariable int id) {
         try {
-            OrderRespone orderRespone = orderService.getOrderById(id);
+            OrderResponse orderRespone = orderService.getOrderById(id);
             ApiResponse response = new ApiResponse("success", "Get brand by id successfully", orderRespone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
