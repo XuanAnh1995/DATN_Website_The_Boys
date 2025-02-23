@@ -5,7 +5,7 @@ package backend.datn.controllers;
 import backend.datn.dto.ApiResponse;
 import backend.datn.dto.request.VoucherCreateRequest;
 import backend.datn.dto.request.VoucherUpdateRequest;
-import backend.datn.dto.response.VoucherRespone;
+import backend.datn.dto.response.VoucherResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
 import backend.datn.services.VoucherService;
@@ -28,7 +28,7 @@ public class VoucherController {
                                                        @RequestParam(defaultValue = "id") String id,
                                                        @RequestParam(defaultValue = "asc")String sort){
         try {
-            Page<VoucherRespone> voucherResponses = voucherService.getAllVoucher(search, page, size, id, sort);
+            Page<VoucherResponse> voucherResponses = voucherService.getAllVoucher(search, page, size, id, sort);
             return ResponseEntity.ok(voucherResponses);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi lấy danh sách voucher: " + e.getMessage());
@@ -49,7 +49,7 @@ public class VoucherController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> updateVoucher(@PathVariable Integer id, @RequestBody VoucherUpdateRequest updateRequestvoucherRequest) {
         try {
-            VoucherRespone Response = voucherService.updateVoucher(updateRequestvoucherRequest,id);
+            VoucherResponse Response = voucherService.updateVoucher(updateRequestvoucherRequest,id);
             ApiResponse response = new ApiResponse("success", "Update  successfully", updateRequestvoucherRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch(EntityNotFoundException e){
@@ -80,8 +80,8 @@ public class VoucherController {
         @PutMapping("/{id}/toggle-status")
         public ResponseEntity<ApiResponse> toggleStatusVoucher(@PathVariable Integer id) {
             try {
-                VoucherRespone voucherRespone = voucherService.toggleStatusVoucher(id);
-                ApiResponse response = new ApiResponse("success", "Thành Công Thay Đổi ", voucherRespone);
+                VoucherResponse voucherResponse = voucherService.toggleStatusVoucher(id);
+                ApiResponse response = new ApiResponse("success", "Thành Công Thay Đổi ", voucherResponse);
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } catch (EntityNotFoundException e) {
                 ApiResponse response = new ApiResponse("error", e.getMessage(), null);

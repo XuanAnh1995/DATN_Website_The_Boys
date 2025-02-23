@@ -11,11 +11,11 @@ import java.time.Instant;
 
 @Data
 @Builder
-public class OrderRespone implements Serializable {
+public class OrderResponse implements Serializable {
     Integer id;
-    EmployeeRespone employee;
-    VoucherRespone voucher;
-    CustomerRespone customer;
+    EmployeeResponse employee;
+    VoucherResponse voucher;
+    CustomerResponse customer;
     String orderCode;
     Instant createDate;
     Integer totalAmount;
