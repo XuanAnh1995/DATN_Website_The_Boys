@@ -3,6 +3,7 @@ package backend.datn.services;
 
 import backend.datn.dto.response.OrderResponse;
 import backend.datn.entities.Order;
+import backend.datn.exceptions.ResourceNotFoundException;
 import backend.datn.mapper.OrderMapper;
 import backend.datn.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -33,7 +35,15 @@ public class OrderSevice {
         return OrderMapper.toOrderRespone(order);
     }
 
+    @Transactional
+    public OrderResponse toggleStatusOrder(Integer id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Voucher khong co id: " + id));
 
+        order.setStatusOrder(order.getStatusOrder() ==1 ? 1: 0);
+        order = orderRepository.save(order);
+        return OrderMapper.toOrderRespone(order);
+    }
 
 }
 
