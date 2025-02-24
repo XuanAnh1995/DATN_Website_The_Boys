@@ -18,7 +18,6 @@ public class ProductDetailUpdateRequest {
     @NotNull(message = "Màu sắc không được để trống")
     private Integer colorId;
 
-    @NotNull(message = "Khuyến mãi không được để trống")
     private Integer promotionId;
 
     @NotEmpty(message = "Cổ áo không được để trống")
@@ -30,10 +29,6 @@ public class ProductDetailUpdateRequest {
     @Size(max = 250, message = "Ảnh không được vượt quá 250 ký tự")
     @NotNull(message = "Ảnh không được để trống")
     private String photo;
-
-    @Size(max = 50, message = "Mã chi tiết sản phẩm không được vượt quá 50 ký tự")
-    @NotNull(message = "Mã chi tiết sản phẩm không được để trống")
-    private String productDetailCode;
 
     @NotNull(message = "Giá nhập không được để trống")
     private BigDecimal importPrice;
