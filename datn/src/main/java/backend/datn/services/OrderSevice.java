@@ -40,7 +40,7 @@ public class OrderSevice {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Voucher khong co id: " + id));
 
-        order.setStatusOrder(order.getStatusOrder() ==1 ? 1: 0);
+        order.setStatusOrder(order.getStatusOrder() ==0 ? 1: 0);
         order = orderRepository.save(order);
         return OrderMapper.toOrderRespone(order);
     }
