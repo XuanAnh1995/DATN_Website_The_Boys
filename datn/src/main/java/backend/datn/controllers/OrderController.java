@@ -11,8 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/order")
 public class OrderController {
     @Autowired
@@ -53,7 +53,7 @@ public class OrderController {
     }
 
 
-    @PutMapping("/{id}/toggle-order")
+    @PutMapping("/{id}/toggle-status")
     public ResponseEntity<ApiResponse> toggleStatusOrder(@PathVariable Integer id){
         try {
             OrderResponse orderRespone = orderService.toggleStatusOrder(id);
