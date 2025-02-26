@@ -13,7 +13,7 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 
     @Query(value = """
                 SELECT * FROM brand 
-                WHERE :search IS NULL OR LOWER(brand_name) LIKE LOWER(CONCAT('%', :search, '%'))
+                WHERE COALESCE(:search, '') = '' OR LOWER(brand_name) LIKE LOWER(CONCAT('%', :search, '%'))
             """, nativeQuery = true)
     Page<Brand> searchBrand(@Param("search") String search, Pageable pageable);
 
