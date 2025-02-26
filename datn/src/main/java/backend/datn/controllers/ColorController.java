@@ -4,7 +4,6 @@ import backend.datn.dto.ApiResponse;
 import backend.datn.dto.request.ColorCreateRequest;
 import backend.datn.dto.request.ColorUpdateRequest;
 import backend.datn.dto.response.ColorResponse;
-import backend.datn.dto.response.SizeResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
 import backend.datn.services.ColorService;

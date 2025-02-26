@@ -3,7 +3,7 @@ package backend.datn.services;
 
 import backend.datn.dto.request.VoucherCreateRequest;
 import backend.datn.dto.request.VoucherUpdateRequest;
-import backend.datn.dto.response.VoucherRespone;
+import backend.datn.dto.response.VoucherResponse;
 import backend.datn.entities.Voucher;
 import backend.datn.exceptions.ResourceNotFoundException;
 import backend.datn.mapper.VoucherMapper;
@@ -16,28 +16,30 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class VoucherService {
     @Autowired
     VoucherRepository voucherRepository;
 
-    public Page<VoucherRespone> getAllVoucher(String search, int page, int size, String sortBy, String sortDir) {
+    public Page<VoucherResponse> getAllVoucher(String search, int page, int size, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page , size, sort);
         Page<Voucher> voucherPage = voucherRepository.searchVouchers(search, pageable);
         return voucherPage.map(VoucherMapper::toVoucherRespone);
     }
-    public VoucherRespone getVoucherById(Integer id) {
+    public VoucherResponse getVoucherById(Integer id) {
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Voucher không tồn tại với ID: " + id));
         return VoucherMapper.toVoucherRespone(voucher);
     }
 
 
-    public VoucherRespone createVoucher(VoucherCreateRequest voucherRequest) {
+    public VoucherResponse createVoucher(VoucherCreateRequest voucherRequest) {
         Voucher voucher = new Voucher();
         voucher.setVoucherName(voucherRequest.getVoucherName());
-        voucher.setVoucherCode(voucherRequest.getVoucherCode());
+        voucher.setVoucherCode(generateVoucherCode());
         voucher.setDescription(voucherRequest.getDescription());
         voucher.setMinCondition(voucherRequest.getMinCondition());
         voucher.setMaxDiscount(voucherRequest.getMaxDiscount());
@@ -50,7 +52,7 @@ public class VoucherService {
 
 
     }
-    public VoucherRespone updateVoucher(VoucherUpdateRequest voucherUpdateRequest,Integer id) {
+    public VoucherResponse updateVoucher(VoucherUpdateRequest voucherUpdateRequest, Integer id) {
         Voucher voucher= voucherRepository.findById(id).orElseThrow(() -> new RuntimeException("Voucher không tồn tại với ID: " + id));
         voucher.setVoucherName(voucherUpdateRequest.getVoucherName());
         voucher.setDescription(voucherUpdateRequest.getDescription());
@@ -64,7 +66,7 @@ public class VoucherService {
         return VoucherMapper.toVoucherRespone(newVoucher);
     }
     @Transactional
-    public VoucherRespone toggleStatusVoucher(Integer id) {
+    public VoucherResponse toggleStatusVoucher(Integer id) {
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Voucher khong co id: " + id));
 
@@ -78,5 +80,9 @@ public class VoucherService {
                 .orElseThrow(() -> new ResourceNotFoundException("Voucher khong co id " + id));
 
         voucherRepository.delete(voucher);
+    }
+    public static String generateVoucherCode() {
+        String uuidPart = UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase();
+        return "VOUCHER-" + uuidPart;
     }
 }

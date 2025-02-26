@@ -3,7 +3,6 @@ package backend.datn.controllers;
 import backend.datn.dto.ApiResponse;
 import backend.datn.dto.request.CategoryCreateRequest;
 import backend.datn.dto.request.CategoryUpdateRequest;
-import backend.datn.dto.response.BrandResponse;
 import backend.datn.dto.response.CategoryResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;

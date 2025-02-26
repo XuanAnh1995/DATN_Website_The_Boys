@@ -8,7 +8,7 @@ import java.time.Instant;
 
 @Data
 @Builder
-public class VoucherRespone {
+public class VoucherResponse {
     Integer id;
     String voucherCode;
     String voucherName;

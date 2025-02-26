@@ -14,7 +14,7 @@ import java.time.Instant;
 public class OrderResponse implements Serializable {
     Integer id;
     EmployeeResponse employee;
-    VoucherRespone voucher;
+    VoucherResponse voucher;
     CustomerResponse customer;
     String orderCode;
     Instant createDate;

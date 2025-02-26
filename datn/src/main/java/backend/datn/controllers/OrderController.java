@@ -39,8 +39,8 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getOrderId(@PathVariable int id) {
         try {
-            OrderResponse orderResponse = orderService.getOrderById(id);
-            ApiResponse response = new ApiResponse("success", "Get brand by id successfully", orderResponse);
+            OrderResponse orderRespone = orderService.getOrderById(id);
+            ApiResponse response = new ApiResponse("success", "Get brand by id successfully", orderRespone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);

@@ -3,7 +3,6 @@ package backend.datn.controllers;
 import backend.datn.dto.ApiResponse;
 import backend.datn.dto.request.SizeCreateRequest;
 import backend.datn.dto.request.SizeUpdateRequest;
-import backend.datn.dto.response.CategoryResponse;
 import backend.datn.dto.response.SizeResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
