@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 public class VoucherService {
     @Autowired
@@ -37,7 +39,7 @@ public class VoucherService {
     public VoucherResponse createVoucher(VoucherCreateRequest voucherRequest) {
         Voucher voucher = new Voucher();
         voucher.setVoucherName(voucherRequest.getVoucherName());
-        voucher.setVoucherCode(voucherRequest.getVoucherCode());
+        voucher.setVoucherCode(generateVoucherCode());
         voucher.setDescription(voucherRequest.getDescription());
         voucher.setMinCondition(voucherRequest.getMinCondition());
         voucher.setMaxDiscount(voucherRequest.getMaxDiscount());
@@ -78,5 +80,9 @@ public class VoucherService {
                 .orElseThrow(() -> new ResourceNotFoundException("Voucher khong co id " + id));
 
         voucherRepository.delete(voucher);
+    }
+    public static String generateVoucherCode() {
+        String uuidPart = UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase();
+        return "VOUCHER-" + uuidPart;
     }
 }

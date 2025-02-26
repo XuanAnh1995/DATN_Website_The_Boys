@@ -3,7 +3,6 @@ package backend.datn.controllers;
 import backend.datn.dto.ApiResponse;
 import backend.datn.dto.request.CategoryCreateRequest;
 import backend.datn.dto.request.CategoryUpdateRequest;
-import backend.datn.dto.response.BrandResponse;
 import backend.datn.dto.response.CategoryResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
@@ -26,13 +25,13 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> createCategory(@RequestBody CategoryCreateRequest categoryCreateRequest) {
         try {
             CategoryResponse categoryResponse = categoryService.createCategory(categoryCreateRequest);
-            ApiResponse response = new ApiResponse("success", "Category created successfully", categoryResponse);
+            ApiResponse response = new ApiResponse("success", "Thêm mới thể loại thành công", categoryResponse);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (EntityAlreadyExistsException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while creating the category", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi thêm mới thể loại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -40,7 +39,7 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Integer id, @RequestBody CategoryUpdateRequest categoryUpdateRequest) {
         try {
             CategoryResponse categoryResponse = categoryService.updateCategory(id, categoryUpdateRequest);
-            ApiResponse response = new ApiResponse("success", "Category updated successfully", categoryResponse);
+            ApiResponse response = new ApiResponse("success", "Cập nhật thể loại thành công", categoryResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
@@ -49,7 +48,7 @@ public class CategoryController {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while updating the category", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi cập nhật thể loại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -73,13 +72,13 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Integer id) {
         try {
             CategoryResponse categoryResponse = categoryService.getCategoryById(id);
-            ApiResponse response = new ApiResponse("success", "Category retrieved successfully", categoryResponse);
+            ApiResponse response = new ApiResponse("success", "Lấy thể loại theo id thành công", categoryResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the category", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất thể loại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -93,10 +92,10 @@ public class CategoryController {
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
             Page<CategoryResponse> categories = categoryService.getAllCategories(search, page, size, sortBy, sortDir);
-            ApiResponse response = new ApiResponse("success", "Categories retrieved successfully", categories);
+            ApiResponse response = new ApiResponse("success", "Lấy được danh sách thể loại thành công", categories);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the categories", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi truy xuất danh sách thể loại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -105,13 +104,13 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> toggleStatusCategory(@PathVariable Integer id){
         try {
             CategoryResponse categoryResponse = categoryService.toggleCategoryStatus(id);
-            ApiResponse response = new ApiResponse("success", "Toggle status category successfully", categoryResponse);
+            ApiResponse response = new ApiResponse("success", "Chuyển đổi trạng thái thể loại thành công", categoryResponse);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while toggling the status of the category", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi chuyển đổi trạng thái của thể loại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
