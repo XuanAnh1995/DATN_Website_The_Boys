@@ -59,7 +59,7 @@ public class BrandService {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thương hiệu có id: " + id));
 
-        if (brand.getBrandName().equalsIgnoreCase(brandUpdateRequest.getBrandName()) && brandRepository.existsByBrandName(brandUpdateRequest.getBrandName())) {
+        if (!brand.getBrandName().equalsIgnoreCase(brandUpdateRequest.getBrandName()) && brandRepository.existsByBrandName(brandUpdateRequest.getBrandName())) {
             throw new EntityAlreadyExistsException("Thương hiệu có tên: " + brandUpdateRequest.getBrandName() + " đã tồn tại");
         }
 
