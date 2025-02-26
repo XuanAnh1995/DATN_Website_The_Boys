@@ -1,7 +1,6 @@
 package backend.datn.controllers;
 
 import backend.datn.dto.ApiResponse;
-import backend.datn.dto.response.BrandResponse;
 import backend.datn.dto.response.OrderResponse;
 import backend.datn.exceptions.EntityNotFoundException;
 import backend.datn.repositories.OrderRepository;
@@ -11,8 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/order")
 public class OrderController {
     @Autowired
@@ -41,29 +40,13 @@ public class OrderController {
     public ResponseEntity<ApiResponse> getOrderId(@PathVariable int id) {
         try {
             OrderResponse orderRespone = orderService.getOrderById(id);
-            ApiResponse response = new ApiResponse("success", "Get order by id successfully", orderRespone);
+            ApiResponse response = new ApiResponse("success", "Get brand by id successfully", orderRespone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the order", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-    @PutMapping("/{id}/toggle-status")
-    public ResponseEntity<ApiResponse> toggleStatusOrder(@PathVariable Integer id){
-        try {
-            OrderResponse orderRespone = orderService.toggleStatusOrder(id);
-            ApiResponse response = new ApiResponse("success","Order status change successful", orderRespone);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while converting the order status.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
