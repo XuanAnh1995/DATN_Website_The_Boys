@@ -21,7 +21,7 @@ public interface StatisticRepository extends JpaRepository<ProductDetail, Intege
                 YEAR(o.create_date) AS yearNumber, 
                 ISNULL(SUM(o.total_bill), 0) AS dailyRevenue
             FROM [order] o
-            WHERE o.status_payment = 1
+            WHERE o.status_order = 5
             GROUP BY o.create_date
             ORDER BY o.create_date;
             """, nativeQuery = true)
@@ -35,7 +35,7 @@ public interface StatisticRepository extends JpaRepository<ProductDetail, Intege
                 YEAR(o.create_date) AS yearNumber, 
                 ISNULL(SUM(o.total_bill), 0) AS weeklyRevenue
             FROM [order] o
-            WHERE o.status_payment = 1
+            WHERE o.status_order = 5
             GROUP BY DATEPART(WEEK, o.create_date), YEAR(o.create_date)
             ORDER BY yearNumber DESC, weekNumber DESC;
             """, nativeQuery = true)
@@ -49,7 +49,7 @@ public interface StatisticRepository extends JpaRepository<ProductDetail, Intege
                 YEAR(o.create_date) AS yearNumber, 
                 ISNULL(SUM(o.total_bill), 0) AS monthlyRevenue
             FROM [order] o
-            WHERE o.status_payment = 1
+            WHERE o.status_order = 5
             GROUP BY MONTH(o.create_date), YEAR(o.create_date)
             ORDER BY yearNumber DESC, monthNumber DESC;
             """, nativeQuery = true)
@@ -62,7 +62,7 @@ public interface StatisticRepository extends JpaRepository<ProductDetail, Intege
                 YEAR(o.create_date) AS year,
                 ISNULL(SUM(o.total_bill), 0) AS yearlyRevenue
             FROM [order] o
-            WHERE o.status_payment = 1
+            WHERE o.status_order = 5
             GROUP BY YEAR(o.create_date)
             ORDER BY YEAR(o.create_date) DESC;
             """, nativeQuery = true)
@@ -81,7 +81,7 @@ public interface StatisticRepository extends JpaRepository<ProductDetail, Intege
                            JOIN color c ON c.id = pd.color_id
                            JOIN order_detail od ON od.product_detail_id = pd.id
                            JOIN [order] o ON o.id = od.order_id
-                           WHERE o.status_payment = 1 \s
+                           WHERE o.status_order = 5 
                            AND o.create_date BETWEEN :startDate AND :endDate -- Khoảng thời gian cần lấy dữ liệu
                            GROUP BY p.product_name, c.color_name, s.size_name
                            ORDER BY totalQuantitySold DESC, totalRevenue DESC; -- Ưu tiên theo số lượng bán, nếu trùng thì xét doanh thu
@@ -93,7 +93,7 @@ public interface StatisticRepository extends JpaRepository<ProductDetail, Intege
     @Query(value = """
                 SELECT COALESCE(SUM(total_bill), 0)
                 FROM [order]
-                WHERE status_payment = 1
+                WHERE status_order = 5
             """, nativeQuery = true)
     BigDecimal getTotalRevenue();
 
