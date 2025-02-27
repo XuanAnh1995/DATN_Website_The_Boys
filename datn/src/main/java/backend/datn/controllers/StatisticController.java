@@ -25,10 +25,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getDailyRevenue() {
         try {
             List<DailyRevenueResponse> data = statisticService.getDailyRevenue();
-            ApiResponse response = new ApiResponse("success", "Fetched daily revenue successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn doanh thu hàng ngày thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch daily revenue", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn doanh thu hàng ngày thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -37,10 +37,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getWeeklyRevenue() {
         try {
             List<WeeklyRevenueResponse> data = statisticService.getWeeklyRevenue();
-            ApiResponse response = new ApiResponse("success", "Fetched weekly revenue successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn doanh thu hàng tuần thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch weekly revenue", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn doanh thu hàng tuần thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -49,10 +49,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getMonthlyRevenue() {
         try {
             List<MonthlyRevenueResponse> data = statisticService.getMonthlyRevenue();
-            ApiResponse response = new ApiResponse("success", "Fetched monthly revenue successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn doanh thu hàng tháng thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch monthly revenue", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn doanh thu hàng tháng thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -61,10 +61,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getYearlyRevenue() {
         try {
             List<YearlyRevenueResponse> data = statisticService.getYearlyRevenue();
-            ApiResponse response = new ApiResponse("success", "Fetched yearly revenue successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn doanh thu hàng năm thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch yearly revenue", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn doanh thu hàng năm thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -73,10 +73,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getTopSellingProducts(@RequestParam String startDate, @RequestParam String endDate) {
         try {
             List<ProductDetailDTO> data = statisticService.getTop5BestSellingProductDetailInAPeriodOfTime(startDate, endDate);
-            ApiResponse response = new ApiResponse("success", "Fetched top-selling products successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn top 5 sản phẩm bán chạy nhất thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch top-selling products", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn top 5 sản phẩm bán chạy nhất thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -85,10 +85,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getTotalRevenue() {
         try {
             BigDecimal data = statisticService.getTotalRevenue();
-            ApiResponse response = new ApiResponse("success", "Fetched total revenue successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn tổng doanh thu thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch total revenue", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn tổng doanh thu thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -97,10 +97,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getTotalCustomers() {
         try {
             Integer data = statisticService.getNumberOfCustomers();
-            ApiResponse response = new ApiResponse("success", "Fetched total customers successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn tổng số khách hàng thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch total customers", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn tổng số khách hàng thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -109,10 +109,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getTotalInvoices() {
         try {
             Integer data = statisticService.getNumberOfInvoices();
-            ApiResponse response = new ApiResponse("success", "Fetched total invoices successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn tổng số hóa đơn thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch total invoices", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn tổng số hóa đơn thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -121,10 +121,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getTotalAdmins() {
         try {
             Integer data = statisticService.getNumberOfAdmin();
-            ApiResponse response = new ApiResponse("success", "Fetched total admins successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn tổng số admin thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch total admins", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn tổng số admin thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -133,10 +133,10 @@ public class StatisticController {
     public ResponseEntity<ApiResponse> getTotalStaff() {
         try {
             Integer data = statisticService.getNumberOfStaff();
-            ApiResponse response = new ApiResponse("success", "Fetched total staff successfully", data);
+            ApiResponse response = new ApiResponse("success", "Truy vấn tổng số nhân viên thành công", data);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "Failed to fetch total staff", null);
+            ApiResponse response = new ApiResponse("error", "Truy vấn tổng số nhân viên thất bại", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
