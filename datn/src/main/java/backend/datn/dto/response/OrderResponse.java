@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 
 @Data
@@ -24,4 +25,6 @@ public class OrderResponse implements Serializable {
     Integer statusOrder;
     Integer statusPayment;
     Integer kindOfOrder;
+
+    List<OrderDetailResponse> orderDetailResponses;
 }
