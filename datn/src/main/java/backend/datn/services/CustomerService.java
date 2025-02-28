@@ -10,6 +10,7 @@ import backend.datn.helpers.CodeGeneratorHelper;
 import backend.datn.helpers.RandomHelper;
 import backend.datn.mapper.CustomerMapper;
 import backend.datn.repositories.CustomerRepository;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -114,5 +116,9 @@ public class CustomerService {
         customer.setStatus(!customer.getStatus());
         customer = customerRepository.save(customer);
         return CustomerMapper.toCustomerResponse(customer);
+    }
+
+    public Optional<Customer> findById(@NotNull Integer customerId) {
+        return customerRepository.findById(customerId);
     }
 }
