@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Entity
@@ -32,4 +34,8 @@ public class OrderDetail {
     @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    public BigDecimal getTotalPrice() {
+        return productDetail.getSalePrice().multiply(BigDecimal.valueOf(quantity));
+    }
 }

@@ -23,7 +23,6 @@ public class OrderResponse implements Serializable {
     BigDecimal totalBill;
     Integer paymentMethod;
     Integer statusOrder;
-    Integer statusPayment;
     Integer kindOfOrder;
 
     List<OrderDetailResponse> orderDetailResponses;
