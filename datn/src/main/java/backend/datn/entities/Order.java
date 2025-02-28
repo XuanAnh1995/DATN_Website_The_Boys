@@ -62,10 +62,6 @@ public class Order {
     private Integer statusOrder;
 
     @NotNull
-    @Column(name = "status_payment", nullable = false)
-    private Boolean statusPayment = false;
-
-    @NotNull
     @Column(name = "kind_of_order", nullable = false)
     private Boolean kindOfOrder = false;
 
