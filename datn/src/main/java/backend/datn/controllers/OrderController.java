@@ -1,22 +1,38 @@
 package backend.datn.controllers;
 
 import backend.datn.dto.ApiResponse;
-import backend.datn.dto.request.PosOrderRequest;
+import backend.datn.dto.request.OrderCreateRequest;
 import backend.datn.dto.response.OrderResponse;
+import backend.datn.entities.*;
 import backend.datn.exceptions.EntityNotFoundException;
-import backend.datn.services.OrderSevice;
+import backend.datn.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
 
     @Autowired
-    private OrderSevice orderService;
+    private OrderService orderService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private VoucherService voucherService;
+
+    @Autowired
+    private ProductDetailService productDetailService;
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAlOrder(
@@ -26,11 +42,11 @@ public class OrderController {
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDir) {
         try {
-            Page<OrderResponse> orderPage = orderService.getAllOrder(search, page, size, sortBy, sortDir);
-            ApiResponse response = new ApiResponse("success", "Get all order successfully", orderPage);
+            Page<OrderResponse> orderPage = orderService.getAllOrders(search, page, size, sortBy, sortDir);
+            ApiResponse response = new ApiResponse("success", "Lấy danh sách hóa đơn thành công", orderPage);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the order list", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi lấy danh sách hóa đơn", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -39,13 +55,13 @@ public class OrderController {
     public ResponseEntity<ApiResponse> getOrderId(@PathVariable int id) {
         try {
             OrderResponse orderRespone = orderService.getOrderById(id);
-            ApiResponse response = new ApiResponse("success", "Get brand by id successfully", orderRespone);
+            ApiResponse response = new ApiResponse("success", "Lấy hóa đơn theo ID thành công", orderRespone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             ApiResponse response = new ApiResponse("error", e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse("error", "An error occurred while retrieving the order", null);
+            ApiResponse response = new ApiResponse("error", "Đã xảy ra lỗi khi lấy hóa đơn", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -65,8 +81,6 @@ public class OrderController {
         }
     }
 
-
-
     @GetMapping("/{id}/details")
     public ResponseEntity<ApiResponse> getOrderDetails(@PathVariable int id) {
         try {
@@ -84,33 +98,49 @@ public class OrderController {
 
     // API: Bán hàng trực tiếp tại quầy POS
     // API này sẽ tạo một đơn hàng mới, sau đó cập nhật trạng thái đơn hàng thành "Hoàn thành" sau khi thanh toán
-//    @PostMapping("/checkout")
-//    public ResponseEntity<ApiResponse> checkoutPOS(@RequestBody PosOrderRequest request) {
-//        try {
-//            // 1. Tạo đơn hàng POS
-//            OrderResponse order = orderService.createOrder(
-//                    request.getCustomer(),
-//                    request.getEmployee(),
-//                    request.getVoucher(),
-//                    request.getOrderDetails(),
-//                    request.getPaymentMethod()
-//            );
-//
-//            // 2. Cập nhật trạng thái đơn hàng sau khi thanh toán thành công
-//            OrderResponse updatedOrder = orderService.updateOrderStatusAfterPayment(order.getId());
-//
-//            // 3. Trả về phản hồi thành công
-//            ApiResponse response = new ApiResponse("success", "Thanh toán POS thành công", updatedOrder);
-//            return ResponseEntity.ok(response);
-//
-//        } catch (EntityNotFoundException e) {
-//            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
-//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-//        } catch (Exception e) {
-//            ApiResponse response = new ApiResponse("error", "Lỗi khi thanh toán tại POS", null);
-//            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @PostMapping("/checkout")
+    public ResponseEntity<ApiResponse> checkoutPOS(@RequestBody OrderCreateRequest request) {
+        try {
+            // Lấy thông tin khách hàng
+            Customer customer = customerService.findById(request.getCustomerId())
+                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khách hàng với ID: " + request.getCustomerId()));
+
+            // Lấy thông tin nhân viên
+            Employee employee = employeeService.findById(request.getEmployeeId())
+                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy nhân viên với ID: " + request.getEmployeeId()));
+
+            // Lấy thông tin voucher (nếu có)
+            Voucher voucher = request.getVoucherId() != null ?
+                    voucherService.findById(request.getVoucherId()).orElse(null) : null;
+
+            // Tạo danh sách chi tiết đơn hàng từ request (giả sử có danh sách sản phẩm trong request)
+            List<OrderDetail> orderDetails = request.getOrderDetails().stream().map(detailReq -> {
+                ProductDetail productDetail = productDetailService.findById(detailReq.getProductDetailId())
+                        .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy sản phẩm với ID: " + detailReq.getProductDetailId()));
+
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setProductDetail(productDetail);
+                orderDetail.setQuantity(detailReq.getQuantity());
+                return orderDetail;
+            }).collect(Collectors.toList());
+
+            // Gọi service để tạo đơn hàng
+            Order order = orderService.createOrder(customer, employee, voucher, orderDetails, request.getPaymentMethod());
+
+            // Cập nhật trạng thái sau thanh toán
+            OrderResponse updatedOrder = orderService.updateOrderStatusAfterPayment(order.getId());
+
+            // Trả về phản hồi thành công
+            ApiResponse response = new ApiResponse("success", "Thanh toán POS thành công", updatedOrder);
+            return ResponseEntity.ok(response);
+
+        } catch (EntityNotFoundException e) {
+            ApiResponse response = new ApiResponse("error", e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("error", "Lỗi khi thanh toán tại POS", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
-

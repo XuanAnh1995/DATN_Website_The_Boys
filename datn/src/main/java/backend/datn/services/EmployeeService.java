@@ -10,6 +10,7 @@ import backend.datn.helpers.CodeGeneratorHelper;
 import backend.datn.helpers.RandomHelper;
 import backend.datn.mapper.EmployeeMapper;
 import backend.datn.repositories.EmployeeRepository;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -113,6 +115,10 @@ public class EmployeeService {
         employee.setStatus(employee.getStatus() == 1 ? 0 : 1);
         employee = employeeRepository.save(employee);
         return EmployeeMapper.toEmployeeResponse(employee);
+    }
+
+    public Optional<Employee> findById(@NotNull Integer employeeId) {
+        return employeeRepository.findById(employeeId);
     }
 }
 
