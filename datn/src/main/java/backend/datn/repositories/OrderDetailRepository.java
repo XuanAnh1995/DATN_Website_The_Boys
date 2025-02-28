@@ -12,4 +12,7 @@ import java.util.List;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
     @Query("SELECT od FROM OrderDetail od WHERE od.order.id = :orderId")
     List<OrderDetail> findByOrderId(@Param("orderId") int orderId);
+
+    // Lấy danh sách chi tiết đơn hàng theo sản phẩm
+    List<OrderDetail> findByProductDetailId(int productDetailId);
 }

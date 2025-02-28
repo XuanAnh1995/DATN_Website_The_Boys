@@ -16,7 +16,6 @@ public class OrderMapper {
                 .totalBill(order.getTotalBill() != null ? order.getTotalBill() : null)
                 .paymentMethod(order.getPaymentMethod() != null ? order.getPaymentMethod() : 0)
                 .statusOrder(order.getStatusOrder() != null ? order.getStatusOrder() :0)
-                .statusPayment(order.getStatusPayment() ? 1 : 0)
                 .kindOfOrder(order.getKindOfOrder() ? 1 : 0)
                 .build();
     }
