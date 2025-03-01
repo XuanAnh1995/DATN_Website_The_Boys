@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -90,5 +91,9 @@ public class VoucherService {
     public static String generateVoucherCode() {
         String uuidPart = UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase();
         return "VOUCHER-" + uuidPart;
+    }
+
+    public Optional<Voucher> findById(Integer voucherId) {
+        return voucherRepository.findById(voucherId);
     }
 }

@@ -557,6 +557,29 @@ VALUES
     (4, 1, 3, 'ORD019', '2025-02-05 13:45:00', 5, 600000, 2, 1, 0),
     (4, 2, 4, 'ORD020', '2025-02-05 14:30:00', 6, 720000, 1, 1, 1);
 
+INSERT INTO [order] (employee_id, voucher_id, customer_id, order_code, create_date, total_amount, total_bill, payment_method, status_order, kind_of_order)
+VALUES
+    (1, 1, 1, 'ORD021', '2025-02-01 10:30:00', 5, 600000, 1, 1, 0),
+    (2, 2, 2, 'ORD022', '2025-10-01 11:00:00', 3, 450000, 2, 2, 0),
+    (3, 3, 3, 'ORD023', '2025-10-01 12:15:00', 4, 550000, 1, 3, 1),
+    (3, 4, 4, 'ORD024', '2025-12-02 14:45:00', 2, 300000, 2, 4, 0),
+    (5, 5, 5, 'ORD025', '2025-09-02 16:00:00', 6, 720000, 1, 5, 1),
+    (4, 6, 6, 'ORD026', '2025-08-02 18:00:00', 5, 650000, 2, 5, 0),
+    (7, 1, 7, 'ORD027', '2025-04-03 09:00:00', 7, 840000, 1, 5, 1),
+    (5, 2, 8, 'ORD028', '2025-03-03 10:30:00', 8, 960000, 1, 3, 0),
+    (1, 3, 1, 'ORD029', '2025-05-03 12:00:00', 4, 500000, 1, 5, 1),
+    (6, 4, 2, 'ORD030', '2025-06-03 14:30:00', 3, 400000, 2, 1, 0),
+    (7, 5, 3, 'ORD031', '2025-07-03 15:00:00', 6, 720000, 1, 3, 0),
+    (4, 6, 4, 'ORD032', '2025-08-04 09:15:00', 5, 600000, 1, 5, 1),
+    (8, 1, 5, 'ORD033', '2025-09-04 11:00:00', 4, 480000, 2, 1, 0),
+    (1, 2, 6, 'ORD034', '2025-01-04 13:30:00', 3, 360000, 1, 2, 0),
+    (2, 3, 7, 'ORD035', '2025-03-04 15:00:00', 6, 720000, 1, 5, 0),
+    (8, 4, 8, 'ORD036', '2025-08-05 10:00:00', 7, 840000, 1, 2, 1),
+    (1, 5, 1, 'ORD037', '2025-09-05 11:30:00', 3, 450000, 2, 1, 1),
+    (3, 6, 2, 'ORD038', '2025-10-05 12:00:00', 4, 500000, 1, 5, 0),
+    (4, 1, 3, 'ORD039', '2025-11-05 13:45:00', 5, 600000, 2, 1, 0),
+    (4, 2, 4, 'ORD040', '2025-12-05 14:30:00', 6, 720000, 1, 5, 1);
+
 INSERT INTO order_detail (order_id, product_detail_id, quantity)
 VALUES
 	(1, 1, 2),   -- Order 1, Product 1, Quantity 2
@@ -579,6 +602,28 @@ VALUES
 	(18, 18, 2),  -- Order 18, Product 18, Quantity 2
 	(19, 19, 4),  -- Order 19, Product 19, Quantity 4
 	(20, 20, 3);  -- Order 20, Product 20, Quantity 3
+INSERT INTO order_detail (order_id, product_detail_id, quantity)
+VALUES
+	(21, 1, 2),   -- Order 1, Product 1, Quantity 2
+	(22, 2, 3),   -- Order 2, Product 2, Quantity 3
+	(23, 3, 4),   -- Order 3, Product 3, Quantity 4
+	(24, 4, 2),   -- Order 4, Product 4, Quantity 2
+	(25, 5, 6),   -- Order 5, Product 5, Quantity 6
+	(26, 6, 5),   -- Order 6, Product 6, Quantity 5
+	(27, 7, 7),   -- Order 7, Product 7, Quantity 7
+	(28, 8, 8),   -- Order 8, Product 8, Quantity 8
+	(29, 9, 4),   -- Order 9, Product 9, Quantity 4
+	(30, 10, 3),  -- Order 10, Product 10, Quantity 3
+	(31, 11, 2),  -- Order 11, Product 11, Quantity 2
+	(32, 12, 5),  -- Order 12, Product 12, Quantity 5
+	(33, 13, 3),  -- Order 13, Product 13, Quantity 3
+	(34, 14, 4),  -- Order 14, Product 14, Quantity 4
+	(35, 15, 2),  -- Order 15, Product 15, Quantity 2
+	(36, 16, 6),  -- Order 16, Product 16, Quantity 6
+	(37, 17, 3),  -- Order 17, Product 17, Quantity 3
+	(38, 18, 2),  -- Order 18, Product 18, Quantity 2
+	(39, 19, 4),  -- Order 19, Product 19, Quantity 4
+	(40, 20, 3);  -- Order 20, Product 20, Quantity 3
 
 INSERT INTO cart (customer_id, product_detail_id, quantity)
 VALUES

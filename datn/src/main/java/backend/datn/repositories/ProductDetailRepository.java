@@ -38,4 +38,17 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
                                               @Param("minPrice") Double minPrice,
                                               @Param("maxPrice") Double maxPrice,
                                               Pageable pageable);
+
+    // Tìm sản phẩm theo product_id
+    List<ProductDetail> findByProductId(int productId);
+
+    // Tìm sản phẩm theo màu sắc
+    List<ProductDetail> findByColorId(int colorId);
+
+    // Tìm sản phẩm theo size
+    List<ProductDetail> findBySizeId(int sizeId);
+
+    // Tìm sản phẩm theo mã sản phẩm
+    ProductDetail findByProductDetailCode(String productDetailCode);
+
 }

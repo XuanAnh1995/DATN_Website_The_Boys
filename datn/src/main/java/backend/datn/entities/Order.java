@@ -1,5 +1,6 @@
 package backend.datn.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,15 +22,18 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
+    @JsonIgnore
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voucher_id")
+    @JsonIgnore
     private Voucher voucher;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     @Size(max = 50)
@@ -56,10 +60,6 @@ public class Order {
     @NotNull
     @Column(name = "status_order", nullable = false)
     private Integer statusOrder;
-
-    @NotNull
-    @Column(name = "status_payment", nullable = false)
-    private Boolean statusPayment = false;
 
     @NotNull
     @Column(name = "kind_of_order", nullable = false)
