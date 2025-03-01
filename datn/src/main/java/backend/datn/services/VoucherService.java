@@ -6,6 +6,7 @@ import backend.datn.dto.request.VoucherUpdateRequest;
 import backend.datn.dto.response.VoucherResponse;
 import backend.datn.entities.Voucher;
 import backend.datn.exceptions.ResourceNotFoundException;
+import backend.datn.helpers.CodeGeneratorHelper;
 import backend.datn.mapper.VoucherMapper;
 import backend.datn.repositories.VoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,14 @@ public class VoucherService {
 
 
     public VoucherResponse createVoucher(VoucherCreateRequest voucherRequest) {
+        String voucherCode;
+        do {
+            voucherCode = generateVoucherCode();
+        } while (voucherRepository.existsByVoucherCode(voucherCode));
+
         Voucher voucher = new Voucher();
         voucher.setVoucherName(voucherRequest.getVoucherName());
-        voucher.setVoucherCode(generateVoucherCode());
+        voucher.setVoucherCode(voucherCode);
         voucher.setDescription(voucherRequest.getDescription());
         voucher.setMinCondition(voucherRequest.getMinCondition());
         voucher.setMaxDiscount(voucherRequest.getMaxDiscount());
@@ -47,11 +53,11 @@ public class VoucherService {
         voucher.setStartDate(voucherRequest.getStartDate());
         voucher.setEndDate(voucherRequest.getEndDate());
         voucher.setStatus(voucherRequest.getStatus());
-        voucher= voucherRepository.save(voucher);
+
+        voucher = voucherRepository.save(voucher);
         return VoucherMapper.toVoucherRespone(voucher);
-
-
     }
+
     public VoucherResponse updateVoucher(VoucherUpdateRequest voucherUpdateRequest, Integer id) {
         Voucher voucher= voucherRepository.findById(id).orElseThrow(() -> new RuntimeException("Voucher không tồn tại với ID: " + id));
         voucher.setVoucherName(voucherUpdateRequest.getVoucherName());
