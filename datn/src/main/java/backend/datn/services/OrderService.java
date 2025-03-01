@@ -223,5 +223,18 @@ public class OrderService {
     }
 
 
+    @Transactional
+    public OrderResponse updateOrderStatus(Integer id, int status) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hóa đơn với id: " + id));
+
+        if (status < -1 || status > 5) {
+            throw new IllegalArgumentException("Trạng thái không hợp lệ: " + status);
+        }
+
+        order.setStatusOrder(status);
+        order = orderRepository.save(order);
+        return OrderMapper.toOrderRespone(order);
+    }
 }
 

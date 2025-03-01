@@ -143,4 +143,53 @@ public class OrderController {
         }
     }
 
+
+    // Cập nhật trạng thái đơn hàng theo mã số
+    @PutMapping("/{id}/pending")
+    public ResponseEntity<ApiResponse> pendingOrder(@PathVariable Integer id) {
+        return updateOrderStatus(id, 0); // 0: Chờ xác nhận
+    }
+
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<ApiResponse> confirmOrder(@PathVariable Integer id) {
+        return updateOrderStatus(id, 2); // 2: Đã xác nhận
+    }
+
+    @PutMapping("/{id}/process")
+    public ResponseEntity<ApiResponse> processOrder(@PathVariable Integer id) {
+        return updateOrderStatus(id, 1); // 1: Chờ thanh toán
+    }
+
+    @PutMapping("/{id}/ship")
+    public ResponseEntity<ApiResponse> shipOrder(@PathVariable Integer id) {
+        return updateOrderStatus(id, 3); // 3: Đang giao hàng
+    }
+
+    @PutMapping("/{id}/failed-delivery")
+    public ResponseEntity<ApiResponse> failedDelivery(@PathVariable Integer id) {
+        return updateOrderStatus(id, 4); // 4: Giao hàng không thành công
+    }
+
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<ApiResponse> completeOrder(@PathVariable Integer id) {
+        return updateOrderStatus(id, 5); // 5: Hoàn thành
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<ApiResponse> cancelOrder(@PathVariable Integer id) {
+        return updateOrderStatus(id, -1); // -1: Đã hủy
+    }
+
+    private ResponseEntity<ApiResponse> updateOrderStatus(Integer id, int status) {
+        try {
+            OrderResponse orderResponse = orderService.updateOrderStatus(id, status);
+            return ResponseEntity.ok(new ApiResponse("success", "Cập nhật trạng thái đơn hàng thành công", orderResponse));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse("error", e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse("error", "Lỗi khi cập nhật trạng thái đơn hàng", null));
+        }
+    }
 }
