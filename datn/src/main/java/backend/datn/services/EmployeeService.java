@@ -4,12 +4,14 @@ import backend.datn.dto.request.EmployeeCreateRequest;
 import backend.datn.dto.request.EmployeeUpdateRequest;
 import backend.datn.dto.response.EmployeeResponse;
 import backend.datn.entities.Employee;
+import backend.datn.entities.Role;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.exceptions.EntityNotFoundException;
 import backend.datn.helpers.CodeGeneratorHelper;
 import backend.datn.helpers.RandomHelper;
 import backend.datn.mapper.EmployeeMapper;
 import backend.datn.repositories.EmployeeRepository;
+import backend.datn.repositories.RoleRepository;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +31,9 @@ public class EmployeeService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     public Page<EmployeeResponse> getAllEmployees(String search, int page, int size, String sortBy, String sortDir) {
         if (sortBy == null || sortBy.trim().isEmpty()) {
@@ -61,6 +66,7 @@ public class EmployeeService {
         if(employeeRepository.existsByUsername(request.getUsername())){
             throw new EntityAlreadyExistsException("Tên đăng nhập đã tồn tại.");
         }
+        Role role = roleRepository.findById(request.getRoleId()).orElseThrow(() -> new EntityNotFoundException("Không tìm thấy role với id: " + request.getRoleId()));
 
         Employee employee = new Employee();
         employee.setEmployeeCode(CodeGeneratorHelper.generateCode("EMP"));
@@ -72,8 +78,10 @@ public class EmployeeService {
         employee.setPhoto(request.getPhoto());
         employee.setGender(request.getGender());
         employee.setCreateDate(Instant.now());
+        employee.setUpdateDate(Instant.now());
         employee.setForgetPassword(false);
         employee.setStatus(1);
+        employee.setRole(role);
 
         String rawPassword = RandomHelper.generateRandomString(8);
         String hashedPassword = passwordEncoder.encode(rawPassword);
