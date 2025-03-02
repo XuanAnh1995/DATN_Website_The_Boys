@@ -6,6 +6,7 @@ import backend.datn.dto.request.PromotionUpdateRequest;
 import backend.datn.dto.response.PromotionResponse;
 import backend.datn.exceptions.EntityAlreadyExistsException;
 import backend.datn.services.PromotionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,7 +23,7 @@ public class PromotionController {
     private PromotionService promotionService;
 
     @GetMapping
-    public ResponseEntity<?> getAllPromotion(
+    public ResponseEntity<ApiResponse> getAllPromotion(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
@@ -33,16 +34,17 @@ public class PromotionController {
     ) {
         try {
             Page<PromotionResponse> promotionResponses = promotionService.getAllPromotion(search, start, end, page, size, sortBy, sortDir);
-            return ResponseEntity.ok(promotionResponses);
+            ApiResponse response = new ApiResponse("success", "Lấy danh sách promotion thành công", promotionResponses);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi lấy danh sách promotion: " + e.getMessage());
+            ApiResponse response = new ApiResponse("error", "An error occurred while getting the promotion list", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createPromotion(@RequestBody PromotionCreateRequest promotionCreateRequest) {
+    public ResponseEntity<ApiResponse> createPromotion(@Valid  @RequestBody PromotionCreateRequest promotionCreateRequest) {
         try {
             PromotionResponse promotionResponse = promotionService.createPromotion(promotionCreateRequest);
             ApiResponse response = new ApiResponse("success", "Tạo promotion thành công", promotionResponse);
