@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 public class EmployeeCreateRequest implements Serializable {
     @NotNull(message = "ID vai trò không được để trống")
-    String roleId;
+    Integer roleId;
 
     @Size(max = 255, message = "Họ và tên không được vượt quá 255 ký tự")
     String fullname;
